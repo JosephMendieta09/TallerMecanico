@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">El Garage</string>
+    <string name="tvTitulo">TALLER MECÁNICO\n\EL GARAGE</string>
+    <string name="imgView">logo</string>
+    <string name="tvBienvenida">Bienvenido !!!</string>
+    <string name="btnIngresar">INGRESAR</string>
+    <string name="imgLogo1">Logo</string>
+    <string name="tvtextView">Bienvenido</string>
+    <string name="edtEmail">Nombre de Usuario o Correo</string>
+    <string name="edtPassword">Contraseña</string>
+    <string name="tvForgot">¿Olvidaste tu Contraseña?</string>
+    <string name="btnLogin">INICIAR</string>
+    <string name="tvOr">O</string>
+    <string name="tvRegister">¿Aún no tienes cuenta? <font color="#E67E00"><b>Regístrate</b></font></string>
+    <string name="imgPat">Patiente</string>
+    <string name="tvTittle">Regístrate</string>
+    <string name="edtName">Nombre de Usuario</string>
+    <string name="edtPhone">Número de Teléfono</string>
+    <string name="edtMail">Correo Electrónico</string>
+    <string name="edtPasswordConfi">Confirmar Contraseña</string>
+    <string name="checkbox">Acepta las <u>Politicas de Privacidad</u> y <u>Términos de Uso</u></string>
+    <string name="btnNext">REGISTRAR</string>
+    <string name="tvHave">¿Ya tienes una cuenta? <font color="#FF8C00"><b>Ingresa</b></font></string>
+    <string name="tvVerification">Verificación</string>
+    <string name="imgVeri">verificacion</string>
+    <string name="edtEmail2">Ingresa tu Correo</string>
+    <string name="btnSend">ENVIAR</string>
+    <string name="tvReset">Cambiar Contraseña</string>
+    <string name="imgReset">Reset</string>
+    <string name="edtPassword2">Ingrese su Nueva Contraseña</string>
+    <string name="edtPassword3">Confirmar Contraseña</string>
+    <string name="btnContinue">CAMBIAR</string>
+    <string name="tvView">Inicie Sesión</string>
+</resources>

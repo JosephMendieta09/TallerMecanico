@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores Primarios (Naranja) -->
+    <color name="primary_color">#FF8C00</color>
+    <color name="primary_dark">#E67E00</color>
+    <color name="primary_light">#FFB347</color>
+
+    <!-- Colores Secundarios (Gris) -->
+    <color name="secondary_color">#666666</color>
+    <color name="secondary_dark">#4D4D4D</color>
+    <color name="secondary_light">#999999</color>
+
+    <!-- Colores de Fondo y Texto -->
+    <color name="background_color">#F5F5F5</color>
+    <color name="text_primary">#333333</color>
+    <color name="text_secondary">#666666</color>
+    <color name="accent_color">#FFA500</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

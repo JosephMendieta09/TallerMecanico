@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegistroActivity"
+    android:background="@drawable/salar">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/imgPat"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@string/imgPat"
+            app:srcCompat="@drawable/logomec" />
+
+        <TextView
+            android:id="@+id/tvTittle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/chonky"
+            android:text="@string/tvTittle"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="40dp"
+            android:autofillHints="10"
+            android:background="@drawable/edttext"
+            android:drawableStart="@drawable/person"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/edtName"
+            android:inputType="text"
+            android:padding="12dp"
+            android:textColorHint="#A5000000"
+            android:textSize="16sp"
+            tools:ignore="TextContrastCheck" />
+
+        <EditText
+            android:id="@+id/edtPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="40dp"
+            android:autofillHints="10"
+            android:background="@drawable/edttext"
+            android:drawableStart="@drawable/phone"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/edtPhone"
+            android:inputType="phone"
+            android:padding="12dp"
+            android:textColorHint="#A5000000"
+            android:textSize="16sp"
+            tools:ignore="TextContrastCheck" />
+
+        <EditText
+            android:id="@+id/edtMail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="40dp"
+            android:autofillHints="10"
+            android:background="@drawable/edttext"
+            android:drawableStart="@drawable/mail"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/edtMail"
+            android:inputType="textEmailAddress"
+            android:padding="12dp"
+            android:textColorHint="#A5000000"
+            android:textSize="16sp"
+            tools:ignore="TextContrastCheck" />
+
+        <EditText
+            android:id="@+id/edtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="40dp"
+            android:autofillHints="10"
+            android:background="@drawable/edttext"
+            android:drawableStart="@drawable/lock"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/edtPassword"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:textColorHint="#A5000000"
+            android:textSize="16sp"
+            tools:ignore="TextContrastCheck" />
+
+        <EditText
+            android:id="@+id/edtPasswordConfi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="40dp"
+            android:autofillHints="10"
+            android:background="@drawable/edttext"
+            android:drawableStart="@drawable/lock"
+            android:drawablePadding="10dp"
+            android:ems="10"
+            android:fontFamily="@font/roboto"
+            android:hint="@string/edtPasswordConfi"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:textColorHint="#A5000000"
+            android:textSize="16sp"
+            tools:ignore="TextContrastCheck" />
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:buttonTint="@color/primary_color"
+            android:textAlignment="center"
+            android:fontFamily="@font/roboto"
+            android:textColor="@color/black"
+            android:text="@string/checkbox"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="40dp"
+            android:backgroundTint="@color/primary_color"
+            android:fontFamily="@font/roboto"
+            android:padding="14dp"
+            android:text="@string/btnNext"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvHave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="@font/roboto"
+            android:textColor="@color/black"
+            android:text="@string/tvHave"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
