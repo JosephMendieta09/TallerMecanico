@@ -25,31 +25,14 @@ public class InicioSesionActivity extends AppCompatActivity {
         tvMensaje = findViewById(R.id.tvCambio);
         Nombre = findViewById(R.id.edtEmail);
 
-        String mensajetx2 = getIntent().getStringExtra("mensajew");
-
-        Bundle recibe = getIntent().getExtras();
-        String mensajetx = null;
-        String nombretx = null;
-        if (recibe != null){
-            mensajetx = recibe.getString("mensajito");
-            nombretx = recibe.getString("nombrecito");
-        }
-
-        if (mensajetx != null){
-            tvMensaje.setText(mensajetx);
-        } else if (mensajetx2 != null) {
-            tvMensaje.setText(mensajetx2);
-        }
-
-        if (nombretx != null){
-            Nombre.setText(nombretx);
-        }
-
         tvForgot = findViewById(R.id.tvForgot);
         tvForgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String mensaje = "Para cambiar Contraseña, Verifica tu Correo";
                 Intent olvidar = new Intent(InicioSesionActivity.this, VerificacionActivity.class);
+                olvidar.putExtra("mensajito", mensaje);
+                olvidar.putExtra("modo", "cambiar");
                 startActivity(olvidar);
             }
         });

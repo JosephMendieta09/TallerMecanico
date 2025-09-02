@@ -14,7 +14,7 @@
     <string name="tvRegister">¿Aún no tienes cuenta? <font color="#E67E00"><b>Regístrate</b></font></string>
     <string name="imgPat">Patiente</string>
     <string name="tvTittle">Regístrate</string>
-    <string name="edtName">Nombre de Usuario</string>
+    <string name="edtName">Nombres</string>
     <string name="edtPhone">Número de Teléfono</string>
     <string name="edtMail">Correo Electrónico</string>
     <string name="edtPasswordConfi">Confirmar Contraseña</string>
@@ -31,4 +31,6 @@
     <string name="edtPassword3">Confirmar Contraseña</string>
     <string name="btnContinue">CAMBIAR</string>
     <string name="tvView">Inicie Sesión</string>
+    <string name="edtApellido">Apellidos</string>
+    <string name="edtDate">Fecha de Nacimiento</string>
 </resources>
