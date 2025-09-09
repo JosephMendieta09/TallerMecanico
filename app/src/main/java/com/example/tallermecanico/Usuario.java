@@ -8,15 +8,22 @@ public class Usuario {
     private String email;
     private String password;
     private String telefono;
-    private String fechaNacimiento;
+    private Date fechaNacimiento;
 
-    public Usuario(String nombre, String apellido, String email, String password, String telefono, String fechaNacimiento) {
+    public Usuario(String nombre, String apellido, String email, String password, String telefono, Date fechaNacimiento) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.password = password;
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public Usuario(String nombre, String apellido, String email, String password) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.password = password;
     }
 
     public String getNombre() {
@@ -59,11 +66,11 @@ public class Usuario {
         this.telefono = telefono;
     }
 
-    public String getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(String  fechaNacimiento) {
+    public void setFechaNacimiento(Date  fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 }

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -43,7 +44,7 @@ public class DBTaller extends SQLiteOpenHelper {
         valores.put("contrasena", contrasena);
         valores.put("telefono", telefono);
         valores.put("fecha_nac", fecha_nac);
-        long resultado = db.insert("usuario", null, valores);
+        long resultado = db.insert("usuarios", null, valores);
         db.close();
         return resultado != -1;
     }
@@ -68,8 +69,13 @@ public class DBTaller extends SQLiteOpenHelper {
         } else {
             valores.put("fecha_nac", "");
         }
-        long resultado = db.insert("usuarios", null, valores);
-        db.close();
-        return resultado != -1;
+        try {
+            long resultado = db.insertOrThrow("usuarios", null, valores);
+            db.close();
+            return resultado != -1;
+        } catch (Exception e) {
+            Log.e("DB_ERROR", "Error insertando usuario: " + e.getMessage());
+            return false;
+        }
     }
 }

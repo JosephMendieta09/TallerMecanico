@@ -17,7 +17,6 @@ public class VerificacionActivity extends AppCompatActivity {
 
     Button btnsend;
     EditText edtemail;
-    TextView tvmensaje;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,33 +24,16 @@ public class VerificacionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_verificacion);
 
         edtemail = findViewById(R.id.edtEmail2);
-        tvmensaje = findViewById(R.id.tvRecibido);
+        String correoMen = getIntent().getStringExtra("correo");
+        edtemail.setText(correoMen);
+
         btnsend = findViewById(R.id.btnSend);
-
-        String correo = getIntent().getStringExtra("correo");
-        String modo = getIntent().getStringExtra("modo");
-        String mensaje1 = getIntent().getStringExtra("mensaje");
-        String mensaje2 = getIntent().getStringExtra("mensajito");
-
-        if ("registro".equals(modo)){
-            edtemail.setText(correo);
-            tvmensaje.setText(mensaje1);
-            btnsend.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent pasar = new Intent(VerificacionActivity.this, InicioSesionActivity.class);
-                    startActivity(pasar);
-                }
-            });
-        } else if ("cambiar".equals(modo)){
-            tvmensaje.setText(mensaje2);
-            btnsend.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent pasar = new Intent(VerificacionActivity.this, CambiarContraActivity.class);
-                    startActivity(pasar);
-                }
-            });
-        }
+        btnsend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pasar = new Intent(VerificacionActivity.this, InicioSesionActivity.class);
+                startActivity(pasar);
+            }
+        });
     }
 }

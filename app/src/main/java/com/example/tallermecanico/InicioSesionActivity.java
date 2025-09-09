@@ -29,10 +29,7 @@ public class InicioSesionActivity extends AppCompatActivity {
         tvForgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String mensaje = "Para cambiar Contraseña, Verifica tu Correo";
-                Intent olvidar = new Intent(InicioSesionActivity.this, VerificacionActivity.class);
-                olvidar.putExtra("mensajito", mensaje);
-                olvidar.putExtra("modo", "cambiar");
+                Intent olvidar = new Intent(InicioSesionActivity.this, CambiarContraActivity.class);
                 startActivity(olvidar);
             }
         });
