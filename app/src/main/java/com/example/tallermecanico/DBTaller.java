@@ -12,7 +12,9 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class DBTaller extends SQLiteOpenHelper {
+    //constructor
     public DBTaller(@Nullable Context context){
+        //invocar al constructor de la clase padre
         super(context, "Taller.db", null, 1);
     }
 
