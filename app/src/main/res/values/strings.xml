@@ -33,4 +33,11 @@
     <string name="tvView">Inicie Sesión</string>
     <string name="edtApellido">Apellidos</string>
     <string name="edtDate">Fecha de Nacimiento</string>
+    <string name="textTitle">Lista de Usuarios</string>
+    <string name="btnVer">VER USUARIOS</string>
+    <string name="textNombre">"Nombres: "</string>
+    <string name="textApellido">"Apellidos: "</string>
+    <string name="textCorreo">"Correo: "</string>
+    <string name="textTelefono">"Nro. Teléfono: "</string>
+    <string name="textContra">"Contraseña: "</string>
 </resources>

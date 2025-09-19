@@ -2,6 +2,7 @@ package com.example.tallermecanico;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class DBTaller extends SQLiteOpenHelper {
@@ -79,5 +81,26 @@ public class DBTaller extends SQLiteOpenHelper {
             Log.e("DB_ERROR", "Error insertando usuario: " + e.getMessage());
             return false;
         }
+    }
+
+    public ArrayList<Usuario> obtenerUsuarios(){
+        ArrayList<Usuario> lista = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM usuarios", null);
+        if (cursor.moveToFirst()){
+            do {
+                Usuario usuario = new Usuario(
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(5),
+                        cursor.getString(4)
+                );
+                lista.add(usuario);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return lista;
     }
 }

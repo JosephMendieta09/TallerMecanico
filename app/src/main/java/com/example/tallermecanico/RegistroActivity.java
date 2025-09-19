@@ -15,7 +15,7 @@ public class RegistroActivity extends AppCompatActivity {
 
     Button Registro;
     TextView tvHave;
-    EditText EdNombre, EdApellido, EdCorreo, EdPassword, EdConfirmar;
+    EditText EdNombre, EdApellido, EdCorreo, EdPhone, EdPassword, EdConfirmar;
     DBTaller dbTaller;
 
     @Override
@@ -27,6 +27,7 @@ public class RegistroActivity extends AppCompatActivity {
         EdNombre = findViewById(R.id.edtName);
         EdApellido = findViewById(R.id.edtApellido);
         EdCorreo = findViewById(R.id.edtMail);
+        EdPhone = findViewById(R.id.edtPhone);
         EdPassword = findViewById(R.id.edtPassword);
         EdConfirmar = findViewById(R.id.edtPasswordConfi);
         Registro = findViewById(R.id.btnNext);
@@ -37,6 +38,7 @@ public class RegistroActivity extends AppCompatActivity {
                 String nombre = EdNombre.getText().toString();
                 String apellido = EdApellido.getText().toString();
                 String correo = EdCorreo.getText().toString();
+                String telefono = EdPhone.getText().toString();
                 String contrasena = EdPassword.getText().toString();
                 String confirmar = EdConfirmar.getText().toString();
 
@@ -45,7 +47,7 @@ public class RegistroActivity extends AppCompatActivity {
                     return;
                 }
 
-                Usuario usuario = new Usuario(nombre, apellido, correo, contrasena);
+                Usuario usuario = new Usuario(nombre, apellido, correo, telefono, contrasena);
                 //Llamada y respuesta de la insercion con SQLite
                 boolean exito = dbTaller.insertarUsuario(usuario);
 

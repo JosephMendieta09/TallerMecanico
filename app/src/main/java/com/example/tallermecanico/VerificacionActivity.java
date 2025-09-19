@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class VerificacionActivity extends AppCompatActivity {
 
-    Button btnsend;
+    Button btnsend, btnver;
     EditText edtemail;
 
     @Override
@@ -33,6 +33,15 @@ public class VerificacionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent pasar = new Intent(VerificacionActivity.this, InicioSesionActivity.class);
                 startActivity(pasar);
+            }
+        });
+
+        btnver = findViewById(R.id.btnVer);
+        btnver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent ver = new Intent(VerificacionActivity.this, VerUsuarioActivity.class);
+                startActivity(ver);
             }
         });
     }

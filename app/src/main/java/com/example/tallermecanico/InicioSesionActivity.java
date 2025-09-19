@@ -29,7 +29,7 @@ public class InicioSesionActivity extends AppCompatActivity {
         tvForgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent olvidar = new Intent(InicioSesionActivity.this, CambiarContraActivity.class);
+                Intent olvidar = new Intent(InicioSesionActivity.this, VerificacionActivity.class);
                 startActivity(olvidar);
             }
         });
