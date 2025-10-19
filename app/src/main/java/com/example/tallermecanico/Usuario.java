@@ -4,34 +4,19 @@ import java.util.Date;
 
 public class Usuario {
     private String nombre;
-    private String apellido;
+    private String usuario;
+    private String rol;
     private String email;
     private String password;
-    private String telefono;
-    private Date fechaNacimiento;
 
-    public Usuario(String nombre, String apellido, String email, String password, String telefono, Date fechaNacimiento) {
+    public Usuario(String nombre, String usuario, String email, String password) {
         this.nombre = nombre;
-        this.apellido = apellido;
-        this.email = email;
-        this.password = password;
-        this.telefono = telefono;
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public Usuario(String nombre, String apellido, String email, String password) {
-        this.nombre = nombre;
-        this.apellido = apellido;
+        this.usuario = usuario;
         this.email = email;
         this.password = password;
     }
 
-    public Usuario(String nombre, String apellido, String email, String telefono, String password) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.email = email;
-        this.telefono = telefono;
-        this.password = password;
+    public Usuario() {
     }
 
     public String getNombre() {
@@ -42,12 +27,20 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 
     public String getEmail() {
@@ -66,19 +59,4 @@ public class Usuario {
         this.password = password;
     }
 
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(Date  fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
 }

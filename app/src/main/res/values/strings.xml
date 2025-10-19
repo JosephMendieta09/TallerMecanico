@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">El Garage</string>
+    <string name="navigation_drawer_open">Abrir menú de navegación</string>
+    <string name="navigation_drawer_close">Cerrar menú de navegación</string>
+
+    <!-- Drawer Menu -->
+    <string name="menu_inicio">Inicio</string>
+    <string name="menu_clientes">Clientes</string>
+    <string name="menu_vehiculos">Vehículos</string>
+    <string name="menu_usuarios">Ver Usuarios</string>
+    <string name="menu_cerrar_sesion">Cerrar Sesión</string>
+
     <string name="tvTitulo">TALLER MECÁNICO\n\EL GARAGE</string>
     <string name="imgView">logo</string>
     <string name="tvBienvenida">Bienvenido !!!</string>
@@ -36,8 +46,10 @@
     <string name="textTitle">Lista de Usuarios</string>
     <string name="btnVer">VER USUARIOS</string>
     <string name="textNombre">"Nombres: "</string>
-    <string name="textApellido">"Apellidos: "</string>
+    <string name="textApellido">"Usuario: "</string>
     <string name="textCorreo">"Correo: "</string>
     <string name="textTelefono">"Nro. Teléfono: "</string>
     <string name="textContra">"Contraseña: "</string>
+    <string name="textlista">Lista de Usuarios</string>
+    <string name="edtUsuario">Usuario</string>
 </resources>

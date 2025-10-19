@@ -22,78 +22,74 @@ public class DBTaller extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE usuarios(" +
+
+        db.execSQL("CREATE TABLE usuario(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "nombre TEXT, "+
-                "apellido TEXT, "+
+                "usuario TEXT, "+
                 "correo TEXT UNIQUE, " +
                 "contrasena TEXT, " +
-                "telefono TEXT, " +
-                "fecha_nac TEXT, " +
-                "verificado INTEGER DEFAULT 0)");
+                "fecha_creacion DATE DEFAULT (DATE('now')))");
+
+        db.execSQL("CREATE TABLE cliente(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                "nombre TEXT," +
+                "carnet INTEGER UNIQUE, " +
+                "direccion TEXT," +
+                "correo TEXT," +
+                "telefono TEXT)");
+
+        db.execSQL("CREATE TABLE vehiculo(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "placa TEXT UNIQUE, " +
+                "id_cliente INTEGER, " +
+                "marca TEXT, " +
+                "modelo TEXT, " +
+                "anio INTEGER, " +
+                "color TEXT, " +
+                "kilometraje INTEGER, " +
+                "FOREIGN KEY(id_cliente) REFERENCES cliente(id))");
+
+        db.execSQL("CREATE TABLE especialidad(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "nombre TEXT, " +
+                "descripcion TEXT)");
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS usuarios");
+        db.execSQL("DROP TABLE IF EXISTS usuario");
+        db.execSQL("DROP TABLE IF EXISTS cliente");
+        db.execSQL("DROP TABLE IF EXISTS vehiculo");
+        db.execSQL("DROP TABLE IF EXISTS especialidad");
         onCreate(db);
     }
 
-    public boolean insertarUsuario(String nombre, String apellido, String correo, String contrasena, String telefono, String fecha_nac) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues valores = new ContentValues();
-        valores.put("nombre", nombre);
-        valores.put("apellido", apellido);
-        valores.put("correo", correo);
-        valores.put("contrasena", contrasena);
-        valores.put("telefono", telefono);
-        valores.put("fecha_nac", fecha_nac);
-        long resultado = db.insert("usuarios", null, valores);
-        db.close();
-        return resultado != -1;
-    }
+
 
     public boolean insertarUsuario(Usuario usuario){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues valores = new ContentValues();
         valores.put("nombre", usuario.getNombre());
-        valores.put("apellido", usuario.getApellido());
+        valores.put("usuario", usuario.getUsuario());
         valores.put("correo", usuario.getEmail());
         valores.put("contrasena", usuario.getPassword());
-        if (usuario.getTelefono() != null){
-            valores.put("telefono", usuario.getTelefono());
-        } else{
-            valores.put("telefono", "");
-        }
-
-        if (usuario.getFechaNacimiento() != null) {
-            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            String fechaFormateada = formato.format(usuario.getFechaNacimiento());
-            valores.put("fecha_nac", fechaFormateada);
-        } else {
-            valores.put("fecha_nac", "");
-        }
-        try {
-            long resultado = db.insertOrThrow("usuarios", null, valores);
-            db.close();
-            return resultado != -1;
-        } catch (Exception e) {
-            Log.e("DB_ERROR", "Error insertando usuario: " + e.getMessage());
-            return false;
-        }
+        long resultado = db.insert("usuario", null, valores);
+        db.close();
+        return resultado != -1;
     }
 
     public ArrayList<Usuario> obtenerUsuarios(){
         ArrayList<Usuario> lista = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM usuarios", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM usuario", null);
         if (cursor.moveToFirst()){
             do {
                 Usuario usuario = new Usuario(
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
-                        cursor.getString(5),
                         cursor.getString(4)
                 );
                 lista.add(usuario);
@@ -102,5 +98,159 @@ public class DBTaller extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return lista;
+    }
+
+    public boolean validarUsuario(String correo, String contrasena) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM usuario WHERE correo=? AND contrasena=?",
+                new String[]{correo, contrasena});
+        boolean existe = cursor.getCount() > 0;
+        cursor.close();
+        db.close();
+        return existe;
+    }
+
+    public boolean existeCorreo(String correo) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM usuario WHERE correo = ?", new String[]{correo});
+        boolean existe = cursor.getCount() > 0;
+        cursor.close();
+        db.close();
+        return existe;
+    }
+
+    public boolean actualizarContrasena(String correo, String nuevaContra) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put("contrasena", nuevaContra);
+        int filas = db.update("usuario", valores, "correo=?", new String[]{correo});
+        db.close();
+        return filas > 0;
+    }
+
+    // MÉTODOS CLIENTE
+    public boolean insertarCliente(Cliente cliente){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put("nombre", cliente.getNombre());
+        valores.put("carnet", cliente.getCarnet());
+        valores.put("direccion", cliente.getDireccion());
+        valores.put("correo", cliente.getCorreo());
+        valores.put("telefono", cliente.getTelefono());
+        long resultado = db.insert("cliente", null, valores);
+        db.close();
+        return resultado != -1;
+    }
+
+    public ArrayList<Cliente> obtenerClientes() {
+        ArrayList<Cliente> lista = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM cliente", null);
+        if (cursor.moveToFirst()) {
+            do {
+                Cliente cliente = new Cliente(
+                        cursor.getString(1),
+                        cursor.getInt(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5)
+                );
+                lista.add(cliente);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return lista;
+    }
+
+    public boolean eliminarCliente(int carnet) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int filas = db.delete("cliente", "carnet=?", new String[]{String.valueOf(carnet)});
+        db.close();
+        return filas > 0;
+    }
+
+    public ArrayList<String> obtenerNombresClientes() {
+        ArrayList<String> nombres = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT nombre FROM cliente", null);
+        if (cursor.moveToFirst()) {
+            do {
+                nombres.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return nombres;
+    }
+
+    public int obtenerIdClientePorNombre(String nombreCliente) {
+        int id = -1;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id FROM cliente WHERE nombre=?", new String[]{nombreCliente});
+        if (cursor.moveToFirst()) {
+            id = cursor.getInt(0);
+        }
+        cursor.close();
+        db.close();
+        return id;
+    }
+
+    // MÉTODOS VEHÍCULO
+    public boolean insertarVehiculo(Vehiculo vehiculo){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put("placa", vehiculo.getPlaca());
+        valores.put("id_cliente", vehiculo.getIdcliente());
+        valores.put("marca", vehiculo.getMarca());
+        valores.put("modelo", vehiculo.getModelo());
+        valores.put("anio", vehiculo.getAnio());
+        valores.put("color", vehiculo.getColor());
+        valores.put("kilometraje", vehiculo.getKilometraje());
+        long resultado = db.insert("vehiculo", null, valores);
+        db.close();
+        return resultado != -1;
+    }
+
+    public ArrayList<Vehiculo> obtenerVehiculos() {
+        ArrayList<Vehiculo> lista = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM vehiculo", null);
+        if (cursor.moveToFirst()) {
+            do {
+                Vehiculo vehiculo = new Vehiculo(
+                        cursor.getString(1),
+                        cursor.getInt(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getInt(5),
+                        cursor.getString(6),
+                        cursor.getInt(7)
+                );
+                lista.add(vehiculo);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return lista;
+    }
+
+    public boolean eliminarVehiculo(String placa) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int filas = db.delete("vehiculo", "placa=?", new String[]{placa});
+        db.close();
+        return filas > 0;
+    }
+
+    public String obtenerNombreClientePorId(int idCliente) {
+        String nombre = "Desconocido";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT nombre FROM cliente WHERE id=?", new String[]{String.valueOf(idCliente)});
+        if (cursor.moveToFirst()) {
+            nombre = cursor.getString(0);
+        }
+        cursor.close();
+        db.close();
+        return nombre;
     }
 }

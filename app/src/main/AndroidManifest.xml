@@ -12,6 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TallerMecanico">
         <activity
+            android:name=".VehiculosActivity"
+            android:exported="false"
+            android:parentActivityName=".HomeActivity"/>
+        <activity
+            android:name=".ClientesActivity"
+            android:exported="false"
+            android:parentActivityName=".HomeActivity"/>
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.TallerMecanico.NoActionBar"/>
+        <activity
             android:name=".VerUsuarioActivity"
             android:exported="false" />
         <activity

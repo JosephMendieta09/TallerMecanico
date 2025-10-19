@@ -41,15 +41,13 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.UsuarioV
             nombreT = item.findViewById(R.id.tvNombre);
             apellidoT = item.findViewById(R.id.tvApellido);
             correoT = item.findViewById(R.id.tvCorreo);
-            telefonoT = item.findViewById(R.id.tvTelefono);
             contraT = item.findViewById(R.id.tvContrasena);
         }
 
         public void bind(Usuario usuario) {
             nombreT.setText(usuario.getNombre());
-            apellidoT.setText(usuario.getApellido());
+            apellidoT.setText(usuario.getUsuario());
             correoT.setText(usuario.getEmail());
-            telefonoT.setText(usuario.getTelefono());
             contraT.setText(usuario.getPassword());
         }
     }
