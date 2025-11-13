@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientesActivity extends AppCompatActivity {
@@ -42,6 +43,20 @@ public class ClientesActivity extends AppCompatActivity {
 
         recyclerClientes = findViewById(R.id.recyclerClientes);
         recyclerClientes.setLayoutManager(new LinearLayoutManager(this));
+
+        listaClientes = new ArrayList<>();
+        clienteAdapter = new ClienteAdapter(listaClientes, new ClienteAdapter.OnClienteDeleteListener() {
+            @Override
+            public void onClienteDelete(Cliente cliente) {
+                if (dbTaller.eliminarCliente(cliente.getCarnet())) {
+                    Toast.makeText(ClientesActivity.this, "Cliente eliminado", Toast.LENGTH_SHORT).show();
+                    cargarClientes();
+                } else {
+                    Toast.makeText(ClientesActivity.this, "Error al eliminar cliente", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        recyclerClientes.setAdapter(clienteAdapter);
 
         cargarClientes();
 
@@ -79,19 +94,15 @@ public class ClientesActivity extends AppCompatActivity {
     }
 
     private void cargarClientes() {
-        listaClientes = dbTaller.obtenerClientes();
-        clienteAdapter = new ClienteAdapter(listaClientes, new ClienteAdapter.OnClienteDeleteListener() {
-            @Override
-            public void onClienteDelete(Cliente cliente) {
-                if (dbTaller.eliminarCliente(cliente.getCarnet())) {
-                    Toast.makeText(ClientesActivity.this, "Cliente eliminado", Toast.LENGTH_SHORT).show();
-                    cargarClientes();
-                } else {
-                    Toast.makeText(ClientesActivity.this, "Error al eliminar cliente", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        recyclerClientes.setAdapter(clienteAdapter);
+        // Obtener los clientes de la base de datos
+        List<Cliente> clientesDB = dbTaller.obtenerClientes();
+
+        // Limpiar la lista actual y agregar todos los clientes nuevos
+        listaClientes.clear();
+        listaClientes.addAll(clientesDB);
+
+        // Notificar al adaptador que los datos han cambiado
+        clienteAdapter.notifyDataSetChanged();
     }
 
     private void limpiarCampos() {

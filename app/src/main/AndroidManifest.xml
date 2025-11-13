@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- AQUÍ VAN LOS PERMISOS -->
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- Si también usas galería, añade este (opcional): -->
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
 
     <application
         android:allowBackup="true"
@@ -12,17 +19,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TallerMecanico">
         <activity
+            android:name=".ReconocimientoPlacaActivity"
+            android:exported="false" />
+        <activity
             android:name=".VehiculosActivity"
             android:exported="false"
-            android:parentActivityName=".HomeActivity"/>
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".ClientesActivity"
             android:exported="false"
-            android:parentActivityName=".HomeActivity"/>
+            android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".HomeActivity"
             android:exported="false"
-            android:theme="@style/Theme.TallerMecanico.NoActionBar"/>
+            android:theme="@style/Theme.TallerMecanico.NoActionBar" />
         <activity
             android:name=".VerUsuarioActivity"
             android:exported="false" />

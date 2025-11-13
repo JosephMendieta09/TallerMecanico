@@ -44,12 +44,13 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.Vehicu
     }
 
     public static class VehiculoViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvPlaca, tvMarca, tvModelo, tvAnio, tvColor, tvKilometraje;
+        private TextView tvPlaca, tvCliente, tvMarca, tvModelo, tvAnio, tvColor, tvKilometraje;
         private Button btnEliminar;
 
         public VehiculoViewHolder(@NonNull View itemView) {
             super(itemView);
             tvPlaca = itemView.findViewById(R.id.tvPlaca);
+            tvCliente = itemView.findViewById(R.id.tvCliente);
             tvMarca = itemView.findViewById(R.id.tvMarca);
             tvModelo = itemView.findViewById(R.id.tvModelo);
             tvAnio = itemView.findViewById(R.id.tvAnio);
@@ -60,6 +61,7 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.Vehicu
 
         public void bind(final Vehiculo vehiculo, final OnVehiculoDeleteListener listener) {
             tvPlaca.setText("Placa: " + vehiculo.getPlaca());
+            tvCliente.setText("Nombre: " + vehiculo.getNombreCliente());
             tvMarca.setText("Marca: " + vehiculo.getMarca());
             tvModelo.setText("Modelo: " + vehiculo.getModelo());
             tvAnio.setText("Año: " + vehiculo.getAnio());

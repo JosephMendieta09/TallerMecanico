@@ -1,5 +1,6 @@
 package com.example.tallermecanico;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -8,10 +9,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VehiculosActivity extends AppCompatActivity {
@@ -19,10 +23,25 @@ public class VehiculosActivity extends AppCompatActivity {
     private EditText edtPlaca, edtMarca, edtModelo, edtAnio, edtColor, edtKilometraje;
     private Spinner spinnerClientes;
     private Button btnGuardarVehiculo;
+    private Button btnScanPlate;
     private RecyclerView recyclerVehiculos;
     private VehiculoAdapter vehiculoAdapter;
     private List<Vehiculo> listaVehiculos;
     private DBTaller dbTaller;
+
+    private final ActivityResultLauncher<Intent> plateRecognitionLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    String plateNumber = result.getData().getStringExtra("PLATE_NUMBER");
+                    if (plateNumber != null) {
+                        edtPlaca.setText(plateNumber);
+                        Toast.makeText(this, "Placa escaneada: " + plateNumber,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +62,45 @@ public class VehiculosActivity extends AppCompatActivity {
         edtColor = findViewById(R.id.edtColor);
         edtKilometraje = findViewById(R.id.edtKilometraje);
         spinnerClientes = findViewById(R.id.spinnerClientes);
+        btnScanPlate = findViewById(R.id.btnScanPlate);
+        btnScanPlate.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ReconocimientoPlacaActivity.class);
+            plateRecognitionLauncher.launch(intent);
+        });
         btnGuardarVehiculo = findViewById(R.id.btnGuardarVehiculo);
 
         recyclerVehiculos = findViewById(R.id.recyclerVehiculos);
         recyclerVehiculos.setLayoutManager(new LinearLayoutManager(this));
 
+        // Inicializar la lista y el adaptador UNA SOLA VEZ
+        listaVehiculos = new ArrayList<>();
+        vehiculoAdapter = new VehiculoAdapter(listaVehiculos, new VehiculoAdapter.OnVehiculoDeleteListener() {
+            @Override
+            public void onVehiculoDelete(Vehiculo vehiculo) {
+                if (dbTaller.eliminarVehiculo(vehiculo.getPlaca())) {
+                    Toast.makeText(VehiculosActivity.this, "Vehículo eliminado", Toast.LENGTH_SHORT).show();
+                    cargarVehiculos();
+                } else {
+                    Toast.makeText(VehiculosActivity.this, "Error al eliminar vehículo", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        recyclerVehiculos.setAdapter(vehiculoAdapter);
+
         cargarSpinnerClientes();
         cargarVehiculos();
 
-        btnGuardarVehiculo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                guardarVehiculo();
+        btnGuardarVehiculo.setOnClickListener(v -> {
+            String placa = edtPlaca.getText().toString().trim();
+
+            if (placa.isEmpty()) {
+                Toast.makeText(this, "Por favor ingresa o escanea una placa",
+                        Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            // Tu lógica para guardar el vehículo
+            guardarVehiculo(placa);
         });
     }
 
@@ -67,8 +112,7 @@ public class VehiculosActivity extends AppCompatActivity {
         spinnerClientes.setAdapter(adapter);
     }
 
-    private void guardarVehiculo() {
-        String placa = edtPlaca.getText().toString().trim();
+    private void guardarVehiculo(String placa) {
         String marca = edtMarca.getText().toString().trim();
         String modelo = edtModelo.getText().toString().trim();
         String anioStr = edtAnio.getText().toString().trim();
@@ -104,26 +148,20 @@ public class VehiculosActivity extends AppCompatActivity {
     }
 
     private void cargarVehiculos() {
-        listaVehiculos = dbTaller.obtenerVehiculos();
+        List<Vehiculo> vehiculosDB = dbTaller.obtenerVehiculos();
 
         // Cargar el nombre del cliente para cada vehículo
-        for (Vehiculo vehiculo : listaVehiculos) {
+        for (Vehiculo vehiculo : vehiculosDB) {
             String nombreCliente = dbTaller.obtenerNombreClientePorId(vehiculo.getIdcliente());
             vehiculo.setNombreCliente(nombreCliente);
         }
 
-        vehiculoAdapter = new VehiculoAdapter(listaVehiculos, new VehiculoAdapter.OnVehiculoDeleteListener() {
-            @Override
-            public void onVehiculoDelete(Vehiculo vehiculo) {
-                if (dbTaller.eliminarVehiculo(vehiculo.getPlaca())) {
-                    Toast.makeText(VehiculosActivity.this, "Vehículo eliminado", Toast.LENGTH_SHORT).show();
-                    cargarVehiculos();
-                } else {
-                    Toast.makeText(VehiculosActivity.this, "Error al eliminar vehículo", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        recyclerVehiculos.setAdapter(vehiculoAdapter);
+        // Limpiar la lista actual y agregar todos los vehículos nuevos
+        listaVehiculos.clear();
+        listaVehiculos.addAll(vehiculosDB);
+
+        // Notificar al adaptador que los datos han cambiado
+        vehiculoAdapter.notifyDataSetChanged();
     }
 
     private void limpiarCampos() {
