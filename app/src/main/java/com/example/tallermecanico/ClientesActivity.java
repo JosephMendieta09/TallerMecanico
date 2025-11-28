@@ -1,5 +1,6 @@
 package com.example.tallermecanico;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,8 +16,7 @@ import java.util.List;
 
 public class ClientesActivity extends AppCompatActivity {
 
-    private EditText edtNombre, edtCarnet, edtDireccion, edtCorreo, edtTelefono;
-    private Button btnGuardarCliente;
+    private Button btnNuevoCliente;
     private RecyclerView recyclerClientes;
     private ClienteAdapter clienteAdapter;
     private List<Cliente> listaClientes;
@@ -34,63 +34,53 @@ public class ClientesActivity extends AppCompatActivity {
 
         dbTaller = new DBTaller(this);
 
-        edtNombre = findViewById(R.id.edtNombreCliente);
-        edtCarnet = findViewById(R.id.edtCarnet);
-        edtDireccion = findViewById(R.id.edtDireccion);
-        edtCorreo = findViewById(R.id.edtCorreoCliente);
-        edtTelefono = findViewById(R.id.edtTelefonoCliente);
-        btnGuardarCliente = findViewById(R.id.btnGuardarCliente);
-
+        btnNuevoCliente = findViewById(R.id.btnNuevoCliente);
         recyclerClientes = findViewById(R.id.recyclerClientes);
         recyclerClientes.setLayoutManager(new LinearLayoutManager(this));
 
         listaClientes = new ArrayList<>();
-        clienteAdapter = new ClienteAdapter(listaClientes, new ClienteAdapter.OnClienteDeleteListener() {
-            @Override
-            public void onClienteDelete(Cliente cliente) {
-                if (dbTaller.eliminarCliente(cliente.getCarnet())) {
-                    Toast.makeText(ClientesActivity.this, "Cliente eliminado", Toast.LENGTH_SHORT).show();
-                    cargarClientes();
-                } else {
-                    Toast.makeText(ClientesActivity.this, "Error al eliminar cliente", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        clienteAdapter = new ClienteAdapter(listaClientes,
+                new ClienteAdapter.OnClienteDeleteListener() {
+                    @Override
+                    public void onClienteDelete(Cliente cliente) {
+                        if (dbTaller.eliminarCliente(cliente.getCarnet())) {
+                            Toast.makeText(ClientesActivity.this, "Cliente eliminado", Toast.LENGTH_SHORT).show();
+                            cargarClientes();
+                        } else {
+                            Toast.makeText(ClientesActivity.this, "Error al eliminar cliente", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new ClienteAdapter.OnClienteEditListener() {
+                    @Override
+                    public void onClienteEdit(Cliente cliente) {
+                        Intent intent = new Intent(ClientesActivity.this, FormClienteActivity.class);
+                        intent.putExtra("cliente_id", cliente.getIdCliente());
+                        intent.putExtra("cliente_nombre", cliente.getNombre());
+                        intent.putExtra("cliente_carnet", cliente.getCarnet());
+                        intent.putExtra("cliente_direccion", cliente.getDireccion());
+                        intent.putExtra("cliente_correo", cliente.getCorreo());
+                        intent.putExtra("cliente_telefono", cliente.getTelefono());
+                        startActivity(intent);
+                    }
+                });
         recyclerClientes.setAdapter(clienteAdapter);
 
-        cargarClientes();
-
-        btnGuardarCliente.setOnClickListener(new View.OnClickListener() {
+        btnNuevoCliente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                guardarCliente();
+                Intent intent = new Intent(ClientesActivity.this, FormClienteActivity.class);
+                startActivity(intent);
             }
         });
+
+        cargarClientes();
     }
 
-    private void guardarCliente() {
-        String nombre = edtNombre.getText().toString().trim();
-        String carnetStr = edtCarnet.getText().toString().trim();
-        String direccion = edtDireccion.getText().toString().trim();
-        String correo = edtCorreo.getText().toString().trim();
-        String telefono = edtTelefono.getText().toString().trim();
-
-        if (nombre.isEmpty() || carnetStr.isEmpty() || direccion.isEmpty() ||
-                correo.isEmpty() || telefono.isEmpty()) {
-            Toast.makeText(this, "Complete todos los campos", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        int carnet = Integer.parseInt(carnetStr);
-        Cliente cliente = new Cliente(nombre, carnet, direccion, correo, telefono);
-
-        if (dbTaller.insertarCliente(cliente)) {
-            Toast.makeText(this, "Cliente registrado exitosamente", Toast.LENGTH_SHORT).show();
-            limpiarCampos();
-            cargarClientes();
-        } else {
-            Toast.makeText(this, "Error al registrar cliente", Toast.LENGTH_SHORT).show();
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        cargarClientes();
     }
 
     private void cargarClientes() {
@@ -103,14 +93,6 @@ public class ClientesActivity extends AppCompatActivity {
 
         // Notificar al adaptador que los datos han cambiado
         clienteAdapter.notifyDataSetChanged();
-    }
-
-    private void limpiarCampos() {
-        edtNombre.setText("");
-        edtCarnet.setText("");
-        edtDireccion.setText("");
-        edtCorreo.setText("");
-        edtTelefono.setText("");
     }
 
     @Override

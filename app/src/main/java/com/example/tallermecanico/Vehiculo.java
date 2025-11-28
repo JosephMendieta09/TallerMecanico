@@ -1,6 +1,7 @@
 package com.example.tallermecanico;
 
 public class Vehiculo {
+    private int idvehiculo;
     private String placa;
     private int idcliente;
     private String nombreCliente;
@@ -18,6 +19,25 @@ public class Vehiculo {
         this.anio = anio;
         this.color = color;
         this.kilometraje = kilometraje;
+    }
+
+    public Vehiculo(int idvehiculo, String placa, int idcliente, String marca, String modelo, int anio, String color, int kilometraje) {
+        this.idvehiculo = idvehiculo;
+        this.placa = placa;
+        this.idcliente = idcliente;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.anio = anio;
+        this.color = color;
+        this.kilometraje = kilometraje;
+    }
+
+    public int getIdvehiculo() {
+        return idvehiculo;
+    }
+
+    public void setIdvehiculo(int idvehiculo) {
+        this.idvehiculo = idvehiculo;
     }
 
     public String getPlaca() {

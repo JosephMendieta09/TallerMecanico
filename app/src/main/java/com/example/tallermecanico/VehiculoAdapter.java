@@ -15,14 +15,20 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.Vehicu
 
     private List<Vehiculo> listaVehiculos;
     private OnVehiculoDeleteListener deleteListener;
+    private OnVehiculoEditListener editListener;
 
     public interface OnVehiculoDeleteListener {
         void onVehiculoDelete(Vehiculo vehiculo);
     }
 
-    public VehiculoAdapter(List<Vehiculo> listaVehiculos, OnVehiculoDeleteListener deleteListener) {
+    public interface OnVehiculoEditListener {
+        void onVehiculoEdit(Vehiculo vehiculo);
+    }
+
+    public VehiculoAdapter(List<Vehiculo> listaVehiculos, OnVehiculoDeleteListener deleteListener, OnVehiculoEditListener editListener) {
         this.listaVehiculos = listaVehiculos;
         this.deleteListener = deleteListener;
+        this.editListener = editListener;
     }
 
     @NonNull
@@ -35,7 +41,7 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.Vehicu
     @Override
     public void onBindViewHolder(@NonNull VehiculoViewHolder holder, int position) {
         Vehiculo vehiculo = listaVehiculos.get(position);
-        holder.bind(vehiculo, deleteListener);
+        holder.bind(vehiculo, deleteListener, editListener);
     }
 
     @Override
@@ -44,11 +50,12 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.Vehicu
     }
 
     public static class VehiculoViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvPlaca, tvCliente, tvMarca, tvModelo, tvAnio, tvColor, tvKilometraje;
-        private Button btnEliminar;
+        private TextView tvId, tvPlaca, tvCliente, tvMarca, tvModelo, tvAnio, tvColor, tvKilometraje;
+        private Button btnEliminar, btnModificar;
 
         public VehiculoViewHolder(@NonNull View itemView) {
             super(itemView);
+            tvId = itemView.findViewById(R.id.tvIdVehiculo);
             tvPlaca = itemView.findViewById(R.id.tvPlaca);
             tvCliente = itemView.findViewById(R.id.tvCliente);
             tvMarca = itemView.findViewById(R.id.tvMarca);
@@ -57,9 +64,11 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.Vehicu
             tvColor = itemView.findViewById(R.id.tvColor);
             tvKilometraje = itemView.findViewById(R.id.tvKilometraje);
             btnEliminar = itemView.findViewById(R.id.btnEliminarVehiculo);
+            btnModificar = itemView.findViewById(R.id.btnModificarVehiculo);
         }
 
-        public void bind(final Vehiculo vehiculo, final OnVehiculoDeleteListener listener) {
+        public void bind(final Vehiculo vehiculo, final OnVehiculoDeleteListener listener, final OnVehiculoEditListener editListener) {
+            tvId.setText("ID: " + vehiculo.getIdvehiculo());
             tvPlaca.setText("Placa: " + vehiculo.getPlaca());
             tvCliente.setText("Nombre: " + vehiculo.getNombreCliente());
             tvMarca.setText("Marca: " + vehiculo.getMarca());
@@ -72,6 +81,13 @@ public class VehiculoAdapter extends RecyclerView.Adapter<VehiculoAdapter.Vehicu
                 @Override
                 public void onClick(View v) {
                     listener.onVehiculoDelete(vehiculo);
+                }
+            });
+
+            btnModificar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    editListener.onVehiculoEdit(vehiculo);
                 }
             });
         }

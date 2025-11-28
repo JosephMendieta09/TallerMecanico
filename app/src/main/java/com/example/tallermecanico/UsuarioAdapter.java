@@ -35,7 +35,7 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.UsuarioV
     }
 
     public class UsuarioViewHolder extends RecyclerView.ViewHolder {
-        private TextView nombreT, apellidoT, correoT, telefonoT, contraT;
+        private TextView nombreT, apellidoT, correoT, contraT;
         public UsuarioViewHolder(View item) {
             super(item);
             nombreT = item.findViewById(R.id.tvNombre);
@@ -45,10 +45,10 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.UsuarioV
         }
 
         public void bind(Usuario usuario) {
-            nombreT.setText(usuario.getNombre());
-            apellidoT.setText(usuario.getUsuario());
-            correoT.setText(usuario.getEmail());
-            contraT.setText(usuario.getPassword());
+            nombreT.setText("Nombre: " + usuario.getNombre());
+            apellidoT.setText("Usuario: " + usuario.getUsuario());
+            correoT.setText("Correo: " + usuario.getEmail());
+            contraT.setText("Contraseña: " + usuario.getPassword());
         }
     }
 }

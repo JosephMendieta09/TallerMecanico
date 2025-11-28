@@ -21,9 +21,6 @@ public class RegistroActivity extends AppCompatActivity {
     TextView tvHave;
     EditText EdNombre, EdApellido, EdCorreo, EdPassword, EdConfirmar;
     DBTaller dbTaller;
-    private RecyclerView recyclerUsu;
-    private UsuarioAdapter usuAdapter;
-    private List<Usuario> listaUsu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,10 +73,5 @@ public class RegistroActivity extends AppCompatActivity {
             }
         });
 
-        recyclerUsu = findViewById(R.id.RecyclerUsuario2);
-        recyclerUsu.setLayoutManager(new LinearLayoutManager(this));
-        listaUsu = dbTaller.obtenerUsuarios();
-        usuAdapter = new UsuarioAdapter(listaUsu);
-        recyclerUsu.setAdapter(usuAdapter);
     }
 }

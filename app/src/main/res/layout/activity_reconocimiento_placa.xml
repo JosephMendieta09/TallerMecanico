@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,10 +10,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reconocimiento de Placa"
+        android:text="@string/reconocimiento_de_placa"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"/>
 
     <ImageView
         android:id="@+id/imageViewPlate"
@@ -20,17 +22,17 @@
         android:layout_height="300dp"
         android:scaleType="centerCrop"
         android:background="#E0E0E0"
-        android:contentDescription="Imagen de la placa"
-        android:layout_marginBottom="20dp"/>
+        android:contentDescription="@string/imagen_de_la_placa"
+        android:layout_marginBottom="30dp"/>
 
     <TextView
         android:id="@+id/tvPlateNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Captura o selecciona una imagen"
+        android:text="@string/captura_o_selecciona_una_imagen"
         android:textSize="16sp"
         android:textAlignment="center"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="30dp"
         android:padding="10dp"/>
 
     <LinearLayout
@@ -45,25 +47,37 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Tomar Foto"
-            android:layout_marginEnd="8dp"/>
+            android:text="@string/tomar_foto"
+            android:backgroundTint="@color/primary_color"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="8dp"
+            android:padding="10dp"
+            tools:ignore="ButtonStyle" />
 
         <Button
             android:id="@+id/btnGallery"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Galería"
-            android:layout_marginStart="8dp"/>
+            android:text="@string/galer_a"
+            android:backgroundTint="@color/primary_color"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="8dp"
+            android:padding="10dp"
+            tools:ignore="ButtonStyle" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btnConfirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Confirmar Placa"
-        android:backgroundTint="@android:color/holo_green_dark"
+        android:text="@string/confirmar_placa"
+        android:backgroundTint="@color/colorOne"
         android:textColor="@android:color/white"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
         android:enabled="false"/>
 
 </LinearLayout>

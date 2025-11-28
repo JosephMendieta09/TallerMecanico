@@ -24,7 +24,7 @@
     <string name="tvRegister">¿Aún no tienes cuenta? <font color="#E67E00"><b>Regístrate</b></font></string>
     <string name="imgPat">Patiente</string>
     <string name="tvTittle">Regístrate</string>
-    <string name="edtName">Nombres</string>
+    <string name="edtName">Nombre</string>
     <string name="edtPhone">Número de Teléfono</string>
     <string name="edtMail">Correo Electrónico</string>
     <string name="edtPasswordConfi">Confirmar Contraseña</string>
@@ -40,7 +40,7 @@
     <string name="edtPassword2">Ingrese su Nueva Contraseña</string>
     <string name="edtPassword3">Confirmar Contraseña</string>
     <string name="btnContinue">CAMBIAR</string>
-    <string name="tvView">Inicie Sesión</string>
+    <string name="tvView">Iniciar Sesión</string>
     <string name="edtApellido">Apellidos</string>
     <string name="edtDate">Fecha de Nacimiento</string>
     <string name="textTitle">Lista de Usuarios</string>
@@ -52,4 +52,39 @@
     <string name="textContra">"Contraseña: "</string>
     <string name="textlista">Lista de Usuarios</string>
     <string name="edtUsuario">Usuario</string>
+    <string name="tvInicio">EL GARAGE</string>
+    <string name="logo">Logo</string>
+    <string name="icono_de_clientes">Clientes_icono</string>
+    <string name="ver_clientes">CLIENTES</string>
+    <string name="ver_vehiculos">VEHÍCULOS</string>
+    <string name="icono_de_vehiculo">Vehñiculo_icono\n</string>
+    <string name="icono_de_servicios">Servicios_icono</string>
+    <string name="icono_de_contactos">Contactos_icono</string>
+    <string name="icono_de_sensores">Sensores_icono</string>
+    <string name="icono_de_usuarios">Usuarios_icono</string>
+    <string name="ver_usuarios">VER USUARIOS</string>
+    <string name="ver_sensor">DIVIERTETE</string>
+    <string name="ver_contactos">CONTACTOS</string>
+    <string name="ver_servicios">SERVICIOS</string>
+    <string name="inicio">Inicio</string>
+    <string name="inicioS"><b>Inicio</b></string>
+    <string name="clientes"><b>Clientes</b></string>
+    <string name="veh_culos"><b>Vehículos</b></string>
+    <string name="servicios"><b>Servicios</b></string>
+    <string name="contactos"><b>Contactos</b></string>
+    <string name="sensores"><b>Diviértete</b></string>
+    <string name="usuarios"><b>Ver Usuarios</b></string>
+    <string name="sesi_n">Sesión</string>
+    <string name="cerrar_sesi_n"><b>Cerrar Sesión</b></string>
+    <string name="taller_mec_nico">Taller Mecánico</string>
+    <string name="usuario_email_com">usuario@email.com</string>
+    <string name="reconocimiento_de_placa">Reconocimiento de Placa</string>
+    <string name="imagen_de_la_placa">Imagen de la placa</string>
+    <string name="captura_o_selecciona_una_imagen">Captura o selecciona una imagen</string>
+    <string name="tomar_foto">Tomar Foto</string>
+    <string name="galer_a">Galería</string>
+    <string name="confirmar_placa">Confirmar Placa</string>
+    <string name="icono_de_usuario">Icono de usuario</string>
+    <string name="modificar">Modificar</string>
+    <string name="eliminar">Eliminar</string>
 </resources>

@@ -16,7 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class VerificacionActivity extends AppCompatActivity {
 
-    Button btnsend, btnver;
+    Button btnsend;
     EditText edtemail;
     TextView tvRecibido;
     DBTaller dbTaller;
@@ -54,15 +54,6 @@ public class VerificacionActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(VerificacionActivity.this, "El correo no está registrado", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-
-        btnver = findViewById(R.id.btnVer);
-        btnver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent ver = new Intent(VerificacionActivity.this, VerUsuarioActivity.class);
-                startActivity(ver);
             }
         });
     }

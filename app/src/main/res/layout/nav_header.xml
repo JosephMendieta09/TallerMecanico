@@ -5,8 +5,7 @@
     android:background="@color/background_color"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:padding="16dp">
 
     <ImageView
         android:layout_width="120dp"
@@ -18,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="Taller Mecánico"
+        android:text="@string/taller_mec_nico"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="18sp"
         android:textColor="@color/black"
@@ -28,7 +27,7 @@
         android:id="@+id/tvUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="usuario@email.com"
+        android:text="@string/usuario_email_com"
         android:textColor="@color/black"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="14sp" />

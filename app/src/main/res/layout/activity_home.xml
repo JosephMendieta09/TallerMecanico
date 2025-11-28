@@ -18,54 +18,281 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/primary_color"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tvInicio"
+                android:textColor="@android:color/white"
+                android:textSize="25sp"
+                android:textAlignment="textStart"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
 
         <!-- Contenido de la pantalla de inicio -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/salar"
-            android:gravity="center"
             android:orientation="vertical"
             android:padding="20dp">
 
             <ImageView
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:contentDescription="Logo"
+                android:contentDescription="@string/logo"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/garage" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:fontFamily="@font/chonky"
-                android:text="Bienvenido al Sistema"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/roboto"
-                android:text="Gestión de Taller Mecánico"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:fontFamily="@font/roboto"
-                android:text="Usa el menú lateral para navegar"
-                android:textAlignment="center"
-                android:textColor="@color/text_secondary"
-                android:textSize="16sp" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardclientes"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="23dp"
+                        android:layout_marginEnd="23dp"
+                        app:cardCornerRadius="30dp"
+                        app:cardBackgroundColor="@color/primary"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            tools:ignore="UseCompoundDrawables">
+
+                            <ImageView
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/clienteic"
+                                android:contentDescription="@string/icono_de_clientes" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="26dp"
+                                android:text="@string/ver_clientes"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/chonky"
+                                android:textStyle="bold"
+                                android:textSize="25sp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardvehiculos"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="23dp"
+                        android:layout_marginEnd="23dp"
+                        app:cardCornerRadius="30dp"
+                        app:cardBackgroundColor="@color/colorThree"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            tools:ignore="UseCompoundDrawables">
+
+                            <ImageView
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/vehiculoic"
+                                android:contentDescription="@string/icono_de_vehiculo" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="26dp"
+                                android:text="@string/ver_vehiculos"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/chonky"
+                                android:textStyle="bold"
+                                android:textSize="25sp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardservicios"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="23dp"
+                        android:layout_marginEnd="23dp"
+                        app:cardCornerRadius="30dp"
+                        app:cardBackgroundColor="@color/secondary"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            tools:ignore="UseCompoundDrawables">
+
+                            <ImageView
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/servicioic"
+                                android:contentDescription="@string/icono_de_servicios" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="26dp"
+                                android:text="@string/ver_servicios"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/chonky"
+                                android:textStyle="bold"
+                                android:textSize="25sp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardcontactos"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="23dp"
+                        android:layout_marginEnd="23dp"
+                        app:cardCornerRadius="30dp"
+                        app:cardBackgroundColor="@color/colorTwo"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            tools:ignore="UseCompoundDrawables">
+
+                            <ImageView
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/contactoic"
+                                android:contentDescription="@string/icono_de_contactos" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="26dp"
+                                android:text="@string/ver_contactos"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/chonky"
+                                android:textStyle="bold"
+                                android:textSize="25sp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardsensores"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="23dp"
+                        android:layout_marginEnd="23dp"
+                        app:cardCornerRadius="30dp"
+                        app:cardBackgroundColor="@color/colorOne"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            tools:ignore="UseCompoundDrawables">
+
+                            <ImageView
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/sensoric"
+                                android:contentDescription="@string/icono_de_sensores" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="26dp"
+                                android:text="@string/ver_sensor"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/chonky"
+                                android:textStyle="bold"
+                                android:textSize="25sp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardusuarios"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginStart="23dp"
+                        android:layout_marginEnd="23dp"
+                        app:cardCornerRadius="30dp"
+                        app:cardBackgroundColor="@color/primary_dark"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:padding="12dp"
+                            tools:ignore="UseCompoundDrawables">
+
+                            <ImageView
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/usuarioic"
+                                android:contentDescription="@string/icono_de_usuarios" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:layout_marginStart="26dp"
+                                android:text="@string/ver_usuarios"
+                                android:textColor="@color/white"
+                                android:fontFamily="@font/chonky"
+                                android:textStyle="bold"
+                                android:textSize="25sp" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+            </ScrollView>
 
         </LinearLayout>
 
@@ -73,8 +300,8 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:background="@color/white"
         app:headerLayout="@layout/nav_header"

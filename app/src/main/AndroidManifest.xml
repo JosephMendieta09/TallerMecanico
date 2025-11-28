@@ -14,10 +14,25 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="El Garage"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TallerMecanico">
+        <activity
+            android:name=".FormVehiculoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FormClienteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SensoresActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ContactosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ServiciosActivity"
+            android:exported="false" />
         <activity
             android:name=".ReconocimientoPlacaActivity"
             android:exported="false" />

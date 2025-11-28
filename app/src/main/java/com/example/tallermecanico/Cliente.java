@@ -1,6 +1,7 @@
 package com.example.tallermecanico;
 
 public class Cliente {
+    private int idCliente;
     private String nombre;
     private int carnet;
     private String direccion;
@@ -13,6 +14,23 @@ public class Cliente {
         this.direccion = direccion;
         this.correo = correo;
         this.telefono = telefono;
+    }
+
+    public Cliente(int idCliente, String nombre, int carnet, String direccion, String correo, String telefono) {
+        this.idCliente = idCliente;
+        this.nombre = nombre;
+        this.carnet = carnet;
+        this.direccion = direccion;
+        this.correo = correo;
+        this.telefono = telefono;
+    }
+
+    public int getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 
     public String getNombre() {

@@ -14,115 +14,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/janda"
-            android:text="Registro de Vehículos"
+            android:text="Gestión de Vehículos"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="25sp"
             android:textStyle="bold" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp">
-
-        <EditText
-            android:id="@+id/edtPlaca"
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edttext"
-            android:fontFamily="@font/roboto"
-            android:hint="Placa del vehículo"
-            android:inputType="textCapCharacters"
-            android:padding="12dp"
-            android:textSize="16sp" />
-
         <Button
-            android:id="@+id/btnScanPlate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="📷" />
-    </LinearLayout>
-
-        <Spinner
-            android:id="@+id/spinnerClientes"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edttext"
-            android:padding="12dp" />
-
-        <EditText
-            android:id="@+id/edtMarca"
+            android:id="@+id/btnNuevoVehiculo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edttext"
-            android:fontFamily="@font/roboto"
-            android:hint="Marca"
-            android:inputType="text"
-            android:padding="12dp"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/edtModelo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edttext"
-            android:fontFamily="@font/roboto"
-            android:hint="Modelo"
-            android:inputType="text"
-            android:padding="12dp"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/edtAnio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edttext"
-            android:fontFamily="@font/roboto"
-            android:hint="Año"
-            android:inputType="number"
-            android:padding="12dp"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/edtColor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edttext"
-            android:fontFamily="@font/roboto"
-            android:hint="Color"
-            android:inputType="text"
-            android:padding="12dp"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/edtKilometraje"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/edttext"
-            android:fontFamily="@font/roboto"
-            android:hint="Kilometraje"
-            android:inputType="number"
-            android:padding="12dp"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/btnGuardarVehiculo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:backgroundTint="@color/primary_color"
             android:fontFamily="@font/roboto"
             android:padding="12dp"
-            android:text="Guardar Vehículo"
-            android:textSize="16sp" />
+            android:text="+ Nuevo Vehículo"
+            android:textSize="16sp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -132,13 +41,13 @@
             android:text="Lista de Vehículos"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="22sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerVehiculos"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="500dp"
             android:layout_marginTop="15dp" />
 
     </LinearLayout>

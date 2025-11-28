@@ -149,6 +149,7 @@ public class DBTaller extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Cliente cliente = new Cliente(
+                        cursor.getInt(0),
                         cursor.getString(1),
                         cursor.getInt(2),
                         cursor.getString(3),
@@ -219,6 +220,7 @@ public class DBTaller extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 Vehiculo vehiculo = new Vehiculo(
+                        cursor.getInt(0),
                         cursor.getString(1),
                         cursor.getInt(2),
                         cursor.getString(3),
@@ -252,5 +254,37 @@ public class DBTaller extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return nombre;
+    }
+
+    public boolean actualizarCliente(Cliente cliente) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put("nombre", cliente.getNombre());
+        valores.put("direccion", cliente.getDireccion());
+        valores.put("correo", cliente.getCorreo());
+        valores.put("telefono", cliente.getTelefono());
+
+        // Actualizamos por ID, no por carnet, ya que el carnet no se debe modificar
+        int filas = db.update("cliente", valores, "id=?",
+                new String[]{String.valueOf(cliente.getIdCliente())});
+        db.close();
+        return filas > 0;
+    }
+
+    public boolean actualizarVehiculo(Vehiculo vehiculo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put("id_cliente", vehiculo.getIdcliente());
+        valores.put("marca", vehiculo.getMarca());
+        valores.put("modelo", vehiculo.getModelo());
+        valores.put("anio", vehiculo.getAnio());
+        valores.put("color", vehiculo.getColor());
+        valores.put("kilometraje", vehiculo.getKilometraje());
+
+        // Actualizamos por ID, no por placa, ya que la placa no se debe modificar
+        int filas = db.update("vehiculo", valores, "id=?",
+                new String[]{String.valueOf(vehiculo.getIdvehiculo())});
+        db.close();
+        return filas > 0;
     }
 }

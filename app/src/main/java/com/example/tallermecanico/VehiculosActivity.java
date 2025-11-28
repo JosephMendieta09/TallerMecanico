@@ -19,29 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VehiculosActivity extends AppCompatActivity {
-
-    private EditText edtPlaca, edtMarca, edtModelo, edtAnio, edtColor, edtKilometraje;
-    private Spinner spinnerClientes;
-    private Button btnGuardarVehiculo;
-    private Button btnScanPlate;
+    private Button btnNuevoVehiculo;
     private RecyclerView recyclerVehiculos;
     private VehiculoAdapter vehiculoAdapter;
     private List<Vehiculo> listaVehiculos;
     private DBTaller dbTaller;
-
-    private final ActivityResultLauncher<Intent> plateRecognitionLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                    String plateNumber = result.getData().getStringExtra("PLATE_NUMBER");
-                    if (plateNumber != null) {
-                        edtPlaca.setText(plateNumber);
-                        Toast.makeText(this, "Placa escaneada: " + plateNumber,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,96 +37,57 @@ public class VehiculosActivity extends AppCompatActivity {
 
         dbTaller = new DBTaller(this);
 
-        edtPlaca = findViewById(R.id.edtPlaca);
-        edtMarca = findViewById(R.id.edtMarca);
-        edtModelo = findViewById(R.id.edtModelo);
-        edtAnio = findViewById(R.id.edtAnio);
-        edtColor = findViewById(R.id.edtColor);
-        edtKilometraje = findViewById(R.id.edtKilometraje);
-        spinnerClientes = findViewById(R.id.spinnerClientes);
-        btnScanPlate = findViewById(R.id.btnScanPlate);
-        btnScanPlate.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ReconocimientoPlacaActivity.class);
-            plateRecognitionLauncher.launch(intent);
-        });
-        btnGuardarVehiculo = findViewById(R.id.btnGuardarVehiculo);
+        btnNuevoVehiculo = findViewById(R.id.btnNuevoVehiculo);
 
         recyclerVehiculos = findViewById(R.id.recyclerVehiculos);
         recyclerVehiculos.setLayoutManager(new LinearLayoutManager(this));
 
         // Inicializar la lista y el adaptador UNA SOLA VEZ
         listaVehiculos = new ArrayList<>();
-        vehiculoAdapter = new VehiculoAdapter(listaVehiculos, new VehiculoAdapter.OnVehiculoDeleteListener() {
-            @Override
-            public void onVehiculoDelete(Vehiculo vehiculo) {
-                if (dbTaller.eliminarVehiculo(vehiculo.getPlaca())) {
-                    Toast.makeText(VehiculosActivity.this, "Vehículo eliminado", Toast.LENGTH_SHORT).show();
-                    cargarVehiculos();
-                } else {
-                    Toast.makeText(VehiculosActivity.this, "Error al eliminar vehículo", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        vehiculoAdapter = new VehiculoAdapter(listaVehiculos,
+                new VehiculoAdapter.OnVehiculoDeleteListener() {
+                    @Override
+                    public void onVehiculoDelete(Vehiculo vehiculo) {
+                        if (dbTaller.eliminarVehiculo(vehiculo.getPlaca())) {
+                            Toast.makeText(VehiculosActivity.this, "Vehículo eliminado", Toast.LENGTH_SHORT).show();
+                            cargarVehiculos();
+                        } else {
+                            Toast.makeText(VehiculosActivity.this, "Error al eliminar vehículo", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new VehiculoAdapter.OnVehiculoEditListener() {
+                    @Override
+                    public void onVehiculoEdit(Vehiculo vehiculo) {
+                        Intent intent = new Intent(VehiculosActivity.this, FormVehiculoActivity.class);
+                        intent.putExtra("vehiculo_id", vehiculo.getIdvehiculo());
+                        intent.putExtra("vehiculo_placa", vehiculo.getPlaca());
+                        intent.putExtra("vehiculo_idcliente", vehiculo.getIdcliente());
+                        intent.putExtra("vehiculo_marca", vehiculo.getMarca());
+                        intent.putExtra("vehiculo_modelo", vehiculo.getModelo());
+                        intent.putExtra("vehiculo_anio", vehiculo.getAnio());
+                        intent.putExtra("vehiculo_color", vehiculo.getColor());
+                        intent.putExtra("vehiculo_kilometraje", vehiculo.getKilometraje());
+                        startActivity(intent);
+                    }
+                });
         recyclerVehiculos.setAdapter(vehiculoAdapter);
 
-        cargarSpinnerClientes();
-        cargarVehiculos();
-
-        btnGuardarVehiculo.setOnClickListener(v -> {
-            String placa = edtPlaca.getText().toString().trim();
-
-            if (placa.isEmpty()) {
-                Toast.makeText(this, "Por favor ingresa o escanea una placa",
-                        Toast.LENGTH_SHORT).show();
-                return;
+        btnNuevoVehiculo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(VehiculosActivity.this, FormVehiculoActivity.class);
+                startActivity(intent);
             }
-
-            // Tu lógica para guardar el vehículo
-            guardarVehiculo(placa);
         });
+
+        cargarVehiculos();
     }
 
-    private void cargarSpinnerClientes() {
-        List<String> nombresClientes = dbTaller.obtenerNombresClientes();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, nombresClientes);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerClientes.setAdapter(adapter);
-    }
-
-    private void guardarVehiculo(String placa) {
-        String marca = edtMarca.getText().toString().trim();
-        String modelo = edtModelo.getText().toString().trim();
-        String anioStr = edtAnio.getText().toString().trim();
-        String color = edtColor.getText().toString().trim();
-        String kilometrajeStr = edtKilometraje.getText().toString().trim();
-
-        if (placa.isEmpty() || marca.isEmpty() || modelo.isEmpty() ||
-                anioStr.isEmpty() || color.isEmpty() || kilometrajeStr.isEmpty()) {
-            Toast.makeText(this, "Complete todos los campos", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (spinnerClientes.getSelectedItem() == null) {
-            Toast.makeText(this, "Seleccione un cliente", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String nombreCliente = spinnerClientes.getSelectedItem().toString();
-        int idCliente = dbTaller.obtenerIdClientePorNombre(nombreCliente);
-
-        int anio = Integer.parseInt(anioStr);
-        int kilometraje = Integer.parseInt(kilometrajeStr);
-
-        Vehiculo vehiculo = new Vehiculo(placa, idCliente, marca, modelo, anio, color, kilometraje);
-
-        if (dbTaller.insertarVehiculo(vehiculo)) {
-            Toast.makeText(this, "Vehículo registrado exitosamente", Toast.LENGTH_SHORT).show();
-            limpiarCampos();
-            cargarVehiculos();
-        } else {
-            Toast.makeText(this, "Error al registrar vehículo", Toast.LENGTH_SHORT).show();
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        cargarVehiculos();
     }
 
     private void cargarVehiculos() {
@@ -162,15 +105,6 @@ public class VehiculosActivity extends AppCompatActivity {
 
         // Notificar al adaptador que los datos han cambiado
         vehiculoAdapter.notifyDataSetChanged();
-    }
-
-    private void limpiarCampos() {
-        edtPlaca.setText("");
-        edtMarca.setText("");
-        edtModelo.setText("");
-        edtAnio.setText("");
-        edtColor.setText("");
-        edtKilometraje.setText("");
     }
 
     @Override
