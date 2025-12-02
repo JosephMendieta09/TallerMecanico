@@ -3,9 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center_horizontal">
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_color"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center_horizontal">
 
     <TextView
         android:layout_width="wrap_content"
@@ -32,7 +46,7 @@
         android:text="@string/captura_o_selecciona_una_imagen"
         android:textSize="16sp"
         android:textAlignment="center"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         android:padding="10dp"/>
 
     <LinearLayout
@@ -40,7 +54,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="2dp">
 
         <Button
             android:id="@+id/btnCapture"
@@ -76,8 +90,9 @@
         android:textColor="@android:color/white"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:padding="10dp"
         android:enabled="false"/>
+    </LinearLayout>
 
 </LinearLayout>

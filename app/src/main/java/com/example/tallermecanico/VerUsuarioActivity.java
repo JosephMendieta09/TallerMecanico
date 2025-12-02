@@ -28,7 +28,6 @@ public class VerUsuarioActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
-    private String correoUsuario;
     private RecyclerView recyclerUsuario;
     private UsuarioAdapter usuarioAdapter;
     private List<Usuario> listaUsuarios;
@@ -52,7 +51,6 @@ public class VerUsuarioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ver_usuario);
 
-        correoUsuario = getIntent().getStringExtra("correo");
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
@@ -95,15 +93,6 @@ public class VerUsuarioActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-
-
-        // Mostrar correo en el header del navigation drawer
-        View headerView = navigationView.getHeaderView(0);
-        TextView tvUserEmail = headerView.findViewById(R.id.tvUserEmail);
-        if (correoUsuario != null) {
-            tvUserEmail.setText(correoUsuario);
-        }
 
         recyclerUsuario = findViewById(R.id.RecyclerUsuario);
         recyclerUsuario.setLayoutManager(new LinearLayoutManager(this));
