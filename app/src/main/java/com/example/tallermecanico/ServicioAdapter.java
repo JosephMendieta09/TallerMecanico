@@ -62,13 +62,11 @@ public class ServicioAdapter extends RecyclerView.Adapter<ServicioAdapter.Servic
     private void cargarImagen(String imageUrl, ImageView imageView) {
         new Thread(() -> {
             try {
-                // La URL ya viene completa desde el servidor
                 URL url = new URL(imageUrl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setDoInput(true);
-                connection.setConnectTimeout(8000); // 8 segundos
-                connection.setReadTimeout(8000);
-                HttpHelper.configurarHeaders(connection);
+                connection.setConnectTimeout(10000);
+                connection.setReadTimeout(10000);
                 connection.connect();
 
                 int responseCode = connection.getResponseCode();
@@ -88,7 +86,7 @@ public class ServicioAdapter extends RecyclerView.Adapter<ServicioAdapter.Servic
 
             } catch (Exception e) {
                 e.printStackTrace();
-                // Si falla, mantener la imagen por defecto
+                // Mantener imagen por defecto si falla
                 new Handler(Looper.getMainLooper()).post(() -> {
                     imageView.setImageResource(android.R.drawable.ic_menu_gallery);
                 });

@@ -16,12 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import org.json.JSONObject;
 
@@ -35,17 +31,17 @@ import java.net.URL;
 public class FormServicioActivity extends AppCompatActivity {
 
     private EditText etNombre, etPrecio, etImagen;
-
     private ImageView ivPreviewImagen;
     private TextView tvUrlCompleta;
     private Button btnGuardar, btnCancelar;
     private ProgressBar progressBar;
     private Servicio servicioEditar;
     private boolean esEdicion = false;
-    private static final String API_URL = "https://smayckel.xo.je/api.php";
-    private static final String BASE_URL = "https://smayckel.xo.je";
-    private static final String IMAGES_PATH = BASE_URL + "/imagenes/";
+    private static final String API_URL = "https://web-production-b5c7d.up.railway.app/api.php";
+    private static final String BASE_URL = "https://web-production-b5c7d.up.railway.app";
+    private static final String IMAGES_PATH = BASE_URL + "/api.php?imagen=";
     private static final String DEFAULT_IMAGE = "default.png";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,8 +68,7 @@ public class FormServicioActivity extends AppCompatActivity {
             esEdicion = true;
             cargarDatosServicio();
             btnGuardar.setText("Actualizar");
-        }  else {
-            // Mostrar imagen por defecto
+        } else {
             actualizarVistaPrevia(DEFAULT_IMAGE);
         }
 
@@ -102,12 +97,10 @@ public class FormServicioActivity extends AppCompatActivity {
         etNombre.setText(servicioEditar.getNombre());
         etPrecio.setText(String.valueOf(servicioEditar.getPrecio()));
 
-        // Extraer solo el nombre de la imagen de la URL completa
         String imagenUrl = servicioEditar.getImagen();
         String nombreImagen = extraerNombreImagen(imagenUrl);
         etImagen.setText(nombreImagen);
 
-        // Cargar vista previa
         actualizarVistaPrevia(nombreImagen);
     }
 
@@ -116,12 +109,10 @@ public class FormServicioActivity extends AppCompatActivity {
             return DEFAULT_IMAGE;
         }
 
-        // Si ya es solo un nombre de archivo, devolverlo
         if (!urlCompleta.contains("/")) {
             return urlCompleta;
         }
 
-        // Extraer el nombre después del último "/"
         String[] partes = urlCompleta.split("/");
         return partes[partes.length - 1];
     }
@@ -133,12 +124,10 @@ public class FormServicioActivity extends AppCompatActivity {
 
         nombreImagen = nombreImagen.trim();
 
-        // Si ya es una URL completa, devolverla
         if (nombreImagen.startsWith("http://") || nombreImagen.startsWith("https://")) {
             return nombreImagen;
         }
 
-        // Construir URL completa
         return IMAGES_PATH + nombreImagen;
     }
 
@@ -146,7 +135,6 @@ public class FormServicioActivity extends AppCompatActivity {
         String urlCompleta = construirUrlImagen(nombreImagen);
         tvUrlCompleta.setText("URL: " + urlCompleta);
 
-        // Cargar imagen en background
         new Thread(() -> {
             try {
                 URL url = new URL(urlCompleta);
@@ -195,15 +183,18 @@ public class FormServicioActivity extends AppCompatActivity {
             return;
         }
 
-        String urlImagen = construirUrlImagen(nombreImagen);
+        // CAMBIO: Guardar solo el nombre del archivo, NO la URL completa
+        if (nombreImagen.isEmpty()) {
+            nombreImagen = DEFAULT_IMAGE;
+        }
 
         progressBar.setVisibility(View.VISIBLE);
         btnGuardar.setEnabled(false);
 
         if (esEdicion) {
-            actualizarServicio(nombre, precio, urlImagen);
+            actualizarServicio(nombre, precio, nombreImagen);
         } else {
-            agregarServicio(nombre, precio, urlImagen);
+            agregarServicio(nombre, precio, nombreImagen);
         }
     }
 
@@ -213,11 +204,10 @@ public class FormServicioActivity extends AppCompatActivity {
                 URL url = new URL(API_URL);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
                 conn.setDoOutput(true);
-                conn.setConnectTimeout(10000);
-                conn.setReadTimeout(10000);
-
-                HttpHelper.configurarHeadersContenido(conn);
+                conn.setConnectTimeout(15000);
+                conn.setReadTimeout(15000);
 
                 JSONObject jsonServicio = new JSONObject();
                 jsonServicio.put("nombre", nombre);
@@ -244,34 +234,17 @@ public class FormServicioActivity extends AppCompatActivity {
                 }
                 reader.close();
 
-                String responseBody = response.toString();
-
                 new Handler(Looper.getMainLooper()).post(() -> {
                     progressBar.setVisibility(View.GONE);
                     btnGuardar.setEnabled(true);
 
                     if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(responseBody);
-                            boolean success = jsonResponse.optBoolean("success", false);
-
-                            if (success) {
-                                Toast.makeText(FormServicioActivity.this,
-                                        "Servicio agregado exitosamente", Toast.LENGTH_SHORT).show();
-                                finish();
-                            } else {
-                                String error = jsonResponse.optString("error", "Error desconocido");
-                                Toast.makeText(FormServicioActivity.this,
-                                        "Error: " + error, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            Toast.makeText(FormServicioActivity.this,
-                                    "Servicio agregado", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
+                        Toast.makeText(FormServicioActivity.this,
+                                "✅ Servicio agregado exitosamente", Toast.LENGTH_SHORT).show();
+                        finish();
                     } else {
                         Toast.makeText(FormServicioActivity.this,
-                                "Error al agregar servicio (Código: " + responseCode + ")",
+                                "❌ Error al agregar servicio (Código: " + responseCode + ")",
                                 Toast.LENGTH_LONG).show();
                     }
                 });
@@ -280,31 +253,38 @@ public class FormServicioActivity extends AppCompatActivity {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                mostrarError("Error: " + e.getMessage());
+                mostrarError("❌ Error de conexión: " + e.getMessage());
             }
         }).start();
     }
 
     private void actualizarServicio(String nombre, double precio, String imagen) {
         new Thread(() -> {
+            HttpURLConnection conn = null;
             try {
+                // CORRECCIÓN: Usar PUT real con el ID en la URL
                 URL url = new URL(API_URL + "?id=" + servicioEditar.getId());
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("PUT");
-                conn.setDoOutput(true);
-                conn.setConnectTimeout(10000);
-                conn.setReadTimeout(10000);
+                conn = (HttpURLConnection) url.openConnection();
 
-                HttpHelper.configurarHeadersContenido(conn);
+                // Importante: setDoOutput debe ir ANTES de setRequestMethod para PUT
+                conn.setDoOutput(true);
+                conn.setDoInput(true);
+                conn.setRequestMethod("PUT");
+                conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setUseCaches(false);
+                conn.setConnectTimeout(15000);
+                conn.setReadTimeout(15000);
 
                 JSONObject jsonServicio = new JSONObject();
                 jsonServicio.put("nombre", nombre);
                 jsonServicio.put("precio", precio);
                 jsonServicio.put("imagen", imagen);
 
+                byte[] outputBytes = jsonServicio.toString().getBytes("UTF-8");
+
                 OutputStream os = conn.getOutputStream();
-                byte[] input = jsonServicio.toString().getBytes("utf-8");
-                os.write(input, 0, input.length);
+                os.write(outputBytes);
                 os.flush();
                 os.close();
 
@@ -312,9 +292,9 @@ public class FormServicioActivity extends AppCompatActivity {
 
                 BufferedReader reader;
                 if (responseCode >= 200 && responseCode < 300) {
-                    reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
                 } else {
-                    reader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+                    reader = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "UTF-8"));
                 }
                 StringBuilder response = new StringBuilder();
                 String line;
@@ -323,43 +303,30 @@ public class FormServicioActivity extends AppCompatActivity {
                 }
                 reader.close();
 
-                String finalResponse = response.toString();
+                final String responseMsg = response.toString();
 
                 new Handler(Looper.getMainLooper()).post(() -> {
                     progressBar.setVisibility(View.GONE);
                     btnGuardar.setEnabled(true);
 
                     if (responseCode == HttpURLConnection.HTTP_OK) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(finalResponse);
-                            boolean success = jsonResponse.optBoolean("success", false);
-
-                            if (success) {
-                                Toast.makeText(FormServicioActivity.this,
-                                        "Servicio actualizado exitosamente", Toast.LENGTH_SHORT).show();
-                                finish();
-                            } else {
-                                String error = jsonResponse.optString("error", "Error desconocido");
-                                Toast.makeText(FormServicioActivity.this,
-                                        "Error: " + error, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            Toast.makeText(FormServicioActivity.this,
-                                    "Servicio actualizado", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
+                        Toast.makeText(FormServicioActivity.this,
+                                "✅ Servicio actualizado exitosamente", Toast.LENGTH_SHORT).show();
+                        finish();
                     } else {
                         Toast.makeText(FormServicioActivity.this,
-                                "Error al actualizar (Código: " + responseCode + ")\n" + finalResponse,
+                                "❌ Error al actualizar (Código: " + responseCode + "): " + responseMsg,
                                 Toast.LENGTH_LONG).show();
                     }
                 });
 
-                conn.disconnect();
-
             } catch (Exception e) {
                 e.printStackTrace();
-                mostrarError("Error: " + e.getMessage());
+                mostrarError("❌ Error de conexión: " + e.getMessage());
+            } finally {
+                if (conn != null) {
+                    conn.disconnect();
+                }
             }
         }).start();
     }
@@ -375,7 +342,7 @@ public class FormServicioActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish(); // vuelve a la actividad anterior
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

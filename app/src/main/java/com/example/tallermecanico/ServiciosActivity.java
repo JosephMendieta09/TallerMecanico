@@ -9,15 +9,11 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +40,8 @@ public class ServiciosActivity extends AppCompatActivity implements ServicioAdap
     private List<Servicio> servicioList;
     private ProgressBar progressBar;
     private FloatingActionButton fabAgregar;
-    private static final String API_URL = "https://smayckel.xo.je/api.php";
+    private static final String API_URL = "https://web-production-b5c7d.up.railway.app/api.php";
+
     private void mostrarCerrarSesion() {
         new AlertDialog.Builder(this)
                 .setTitle("Cerrar sesión")
@@ -138,9 +135,9 @@ public class ServiciosActivity extends AppCompatActivity implements ServicioAdap
                 URL url = new URL(API_URL);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
-                HttpHelper.configurarHeaders(conn);
-                conn.setConnectTimeout(10000); // 10 segundos
-                conn.setReadTimeout(10000);
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setConnectTimeout(15000);
+                conn.setReadTimeout(15000);
 
                 int responseCode = conn.getResponseCode();
 
@@ -154,35 +151,30 @@ public class ServiciosActivity extends AppCompatActivity implements ServicioAdap
                     }
                     reader.close();
 
-                    String jsonString = response.toString();
+                    String jsonString = response.toString().trim();
                     List<Servicio> servicios = new ArrayList<>();
 
                     try {
-                        // La API mejorada devuelve un objeto con "success" y "data"
-                        JSONObject jsonResponse = new JSONObject(jsonString);
+                        if (jsonString.startsWith("{")) {
+                            JSONObject jsonResponse = new JSONObject(jsonString);
 
-                        if (jsonResponse.has("data")) {
-                            // Formato nuevo: {"success": true, "data": [...]}
-                            JSONArray jsonArray = jsonResponse.getJSONArray("data");
-
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject obj = jsonArray.getJSONObject(i);
-
-                                Servicio servicio = new Servicio(
-                                        obj.getInt("id"),
-                                        obj.getString("nombre"),
-                                        obj.getDouble("precio"),
-                                        obj.getString("imagen")
-                                );
-                                servicios.add(servicio);
+                            if (jsonResponse.has("data")) {
+                                JSONArray jsonArray = jsonResponse.getJSONArray("data");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject obj = jsonArray.getJSONObject(i);
+                                    Servicio servicio = new Servicio(
+                                            obj.getInt("id"),
+                                            obj.getString("nombre"),
+                                            obj.getDouble("precio"),
+                                            obj.getString("imagen")
+                                    );
+                                    servicios.add(servicio);
+                                }
                             }
-                        } else {
-                            // Formato antiguo: directamente un array [...]
+                        } else if (jsonString.startsWith("[")) {
                             JSONArray jsonArray = new JSONArray(jsonString);
-
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject obj = jsonArray.getJSONObject(i);
-
                                 Servicio servicio = new Servicio(
                                         obj.getInt("id"),
                                         obj.getString("nombre"),
@@ -194,30 +186,35 @@ public class ServiciosActivity extends AppCompatActivity implements ServicioAdap
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        mostrarError("Error al parsear JSON: " + e.getMessage());
+                        mostrarError("❌ Error al procesar datos: " + e.getMessage());
                         return;
                     }
 
+                    List<Servicio> finalServicios = servicios;
                     new Handler(Looper.getMainLooper()).post(() -> {
                         servicioList.clear();
-                        servicioList.addAll(servicios);
+                        servicioList.addAll(finalServicios);
                         adapter.notifyDataSetChanged();
                         progressBar.setVisibility(View.GONE);
 
-                        if (servicios.isEmpty()) {
+                        if (finalServicios.isEmpty()) {
                             Toast.makeText(ServiciosActivity.this,
-                                    "No hay servicios disponibles", Toast.LENGTH_SHORT).show();
+                                    "📋 No hay servicios disponibles", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(ServiciosActivity.this,
+                                    "✅ " + finalServicios.size() + " servicios cargados",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
-                    mostrarError("Error al cargar servicios. Código: " + responseCode);
+                    mostrarError("❌ Error del servidor. Código: " + responseCode);
                 }
 
                 conn.disconnect();
 
             } catch (Exception e) {
                 e.printStackTrace();
-                mostrarError("Error de conexión: " + e.getMessage());
+                mostrarError("❌ Error de conexión: " + e.getMessage());
             }
         }).start();
     }
@@ -243,14 +240,18 @@ public class ServiciosActivity extends AppCompatActivity implements ServicioAdap
         progressBar.setVisibility(View.VISIBLE);
 
         new Thread(() -> {
+            HttpURLConnection conn = null;
             try {
+                // CORRECCIÓN: Usar DELETE real con el ID en la URL
                 URL url = new URL(API_URL + "?id=" + servicio.getId());
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("DELETE");
-                HttpHelper.configurarHeaders(conn);
-                conn.setConnectTimeout(10000);
-                conn.setReadTimeout(10000);
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setConnectTimeout(15000);
+                conn.setReadTimeout(15000);
 
+                // DELETE no necesita body, pero algunos servidores esperan que se lea la respuesta
                 int responseCode = conn.getResponseCode();
 
                 BufferedReader reader;
@@ -259,7 +260,6 @@ public class ServiciosActivity extends AppCompatActivity implements ServicioAdap
                 } else {
                     reader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
                 }
-
                 StringBuilder response = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
@@ -267,42 +267,29 @@ public class ServiciosActivity extends AppCompatActivity implements ServicioAdap
                 }
                 reader.close();
 
-                String responseBody = response.toString();
+                final String responseMsg = response.toString();
 
                 new Handler(Looper.getMainLooper()).post(() -> {
                     progressBar.setVisibility(View.GONE);
 
                     if (responseCode == HttpURLConnection.HTTP_OK) {
-                        try {
-                            JSONObject jsonResponse = new JSONObject(responseBody);
-                            boolean success = jsonResponse.optBoolean("success", false);
-
-                            if (success) {
-                                Toast.makeText(ServiciosActivity.this,
-                                        "Servicio eliminado exitosamente", Toast.LENGTH_SHORT).show();
-                                cargarServicios();
-                            } else {
-                                String error = jsonResponse.optString("error", "Error desconocido");
-                                Toast.makeText(ServiciosActivity.this,
-                                        "Error: " + error, Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception e) {
-                            Toast.makeText(ServiciosActivity.this,
-                                    "Servicio eliminado", Toast.LENGTH_SHORT).show();
-                            cargarServicios();
-                        }
+                        Toast.makeText(ServiciosActivity.this,
+                                "✅ Servicio eliminado exitosamente", Toast.LENGTH_SHORT).show();
+                        cargarServicios();
                     } else {
                         Toast.makeText(ServiciosActivity.this,
-                                "Error al eliminar servicio (Código: " + responseCode + ")",
+                                "❌ Error al eliminar servicio (Código: " + responseCode + "): " + responseMsg,
                                 Toast.LENGTH_LONG).show();
                     }
                 });
 
-                conn.disconnect();
-
             } catch (Exception e) {
                 e.printStackTrace();
-                mostrarError("Error al eliminar: " + e.getMessage());
+                mostrarError("❌ Error al eliminar: " + e.getMessage());
+            } finally {
+                if (conn != null) {
+                    conn.disconnect();
+                }
             }
         }).start();
     }
