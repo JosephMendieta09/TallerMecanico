@@ -35,8 +35,8 @@ public class GameView extends SurfaceView implements Runnable, SurfaceHolder.Cal
 
     // Car state
     private float carX = 0f, carY = 0f;
-    private float carWidth = 150f;
-    private float carHeight = 200f;
+    private float carWidth = 180f;
+    private float carHeight = 220f;
     private float tiltX = 0f; // inclinación del celular
     private float carSpeed = 8f; // velocidad lateral
 
@@ -78,11 +78,11 @@ public class GameView extends SurfaceView implements Runnable, SurfaceHolder.Cal
         obstacleSign = BitmapFactory.decodeResource(ctx.getResources(), R.drawable.obstacle_sign);
 
         // Escalar bitmaps al tamaño deseado
-        carBitmap = Bitmap.createScaledBitmap(carBitmap, 150, 200, true);
-        obstacleCar1 = Bitmap.createScaledBitmap(obstacleCar1, 140, 180, true);
-        obstacleCar2 = Bitmap.createScaledBitmap(obstacleCar2, 150, 190, true);
-        obstacleTree = Bitmap.createScaledBitmap(obstacleTree, 100, 150, true);
-        obstacleSign = Bitmap.createScaledBitmap(obstacleSign, 150, 120, true);
+        carBitmap = Bitmap.createScaledBitmap(carBitmap, 180, 220, true);
+        obstacleCar1 = Bitmap.createScaledBitmap(obstacleCar1, 160, 200, true);
+        obstacleCar2 = Bitmap.createScaledBitmap(obstacleCar2, 180, 220, true);
+        obstacleTree = Bitmap.createScaledBitmap(obstacleTree, 150, 200, true);
+        obstacleSign = Bitmap.createScaledBitmap(obstacleSign, 200, 160, true);
     }
 
     public void resetGame() {

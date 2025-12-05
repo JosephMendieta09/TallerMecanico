@@ -49,7 +49,7 @@ public class ServicioAdapter extends RecyclerView.Adapter<ServicioAdapter.Servic
         Servicio servicio = servicioList.get(position);
 
         holder.tvNombre.setText(servicio.getNombre());
-        holder.tvPrecio.setText("$" + String.format("%.2f", servicio.getPrecio()));
+        holder.tvPrecio.setText("Bs" + String.format("%.2f", servicio.getPrecio()));
         holder.ivImagen.setImageResource(android.R.drawable.ic_menu_gallery);
         if (servicio.getImagen() != null && !servicio.getImagen().isEmpty()) {
             cargarImagen(servicio.getImagen(), holder.ivImagen);

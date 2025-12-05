@@ -17,13 +17,13 @@
         <!-- Icono de usuario -->
         <ImageView
             android:id="@+id/ivUsuarioIcono"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_gravity="center_vertical"
-            android:src="@android:drawable/ic_menu_myplaces"
+            android:src="@drawable/user"
             android:contentDescription="@string/icono_de_usuario"
             android:background="@android:color/darker_gray"
-            android:padding="8dp"
+            android:padding="4dp"
             android:scaleType="centerInside"/>
 
         <!-- Información del usuario -->
