@@ -105,7 +105,7 @@
                         android:layout_marginEnd="23dp"
                         android:clickable="true"
                         android:focusable="true"
-                        app:cardBackgroundColor="@color/colorTwo"
+                        app:cardBackgroundColor="@color/primary_dark"
                         app:cardCornerRadius="30dp">
 
                         <LinearLayout
@@ -144,7 +144,7 @@
                         android:layout_marginEnd="23dp"
                         android:clickable="true"
                         android:focusable="true"
-                        app:cardBackgroundColor="@color/colorTwo"
+                        app:cardBackgroundColor="@color/secondary"
                         app:cardCornerRadius="30dp">
 
                         <LinearLayout
@@ -222,7 +222,7 @@
                         android:layout_marginEnd="23dp"
                         android:clickable="true"
                         android:focusable="true"
-                        app:cardBackgroundColor="@color/colorTwo"
+                        app:cardBackgroundColor="@color/primary_dark"
                         app:cardCornerRadius="30dp">
 
                         <LinearLayout
@@ -262,7 +262,7 @@
                         android:layout_marginBottom="20dp"
                         android:clickable="true"
                         android:focusable="true"
-                        app:cardBackgroundColor="@color/colorTwo"
+                        app:cardBackgroundColor="@color/secondary"
                         app:cardCornerRadius="30dp">
 
                         <LinearLayout

@@ -23,6 +23,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
@@ -32,17 +33,11 @@ public class ContactosActivity extends AppCompatActivity implements OnMapReadyCa
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
-    private MapView mapView;
     private GoogleMap mMap;
 
-    // Coordenadas de Plaza 24 de Septiembre, Santa Cruz, Bolivia
     private static final double LATITUD = -17.778824789713884;
     private static final double LONGITUD = -63.14913753133914;
     private static final String NOMBRE_LUGAR = "Taller Mecánico El Garage";
-
-    private CardView cardMapa;
-
-    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
 
     private void mostrarCerrarSesion() {
         new AlertDialog.Builder(this)
@@ -106,19 +101,11 @@ public class ContactosActivity extends AppCompatActivity implements OnMapReadyCa
         });
 
         // Inicializar vistas
-        cardMapa = findViewById(R.id.cardMapa);
-        mapView = findViewById(R.id.mapView);
-
-        // Configurar MapView
-        Bundle mapViewBundle = null;
-        if (savedInstanceState != null) {
-            mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
         }
-        mapView.onCreate(mapViewBundle);
-        mapView.getMapAsync(this);
-
-        // Click en el card del mapa para abrir Google Maps
-        cardMapa.setOnClickListener(v -> abrirGoogleMaps());
     }
 
     @Override
@@ -134,7 +121,7 @@ public class ContactosActivity extends AppCompatActivity implements OnMapReadyCa
                 .title(NOMBRE_LUGAR));
 
         // Mover cámara a la ubicación
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionTaller, 16));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionTaller, 14));
 
         // Configurar tipo de mapa
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -143,72 +130,9 @@ public class ContactosActivity extends AppCompatActivity implements OnMapReadyCa
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setCompassEnabled(true);
 
-        // Click en el mapa también abre Google Maps
-        mMap.setOnMapClickListener(latLng -> abrirGoogleMaps());
-    }
-
-    private void abrirGoogleMaps() {
-        // Intent para abrir Google Maps con la ubicación
-        Uri gmmIntentUri = Uri.parse("geo:" + LATITUD + "," + LONGITUD +
-                "?q=" + LATITUD + "," + LONGITUD + "(" + NOMBRE_LUGAR + ")");
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
-
-        if (mapIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(mapIntent);
-        } else {
-            // Si no tiene Google Maps instalado, abrir en navegador
-            Uri webUri = Uri.parse("https://www.google.com/maps/search/?api=1&query=" +
-                    LATITUD + "," + LONGITUD);
-            Intent webIntent = new Intent(Intent.ACTION_VIEW, webUri);
-            startActivity(webIntent);
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
-        if (mapViewBundle == null) {
-            mapViewBundle = new Bundle();
-            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
-        }
-        mapView.onSaveInstanceState(mapViewBundle);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mapView.onResume();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mapView.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mapView.onStop();
-    }
-
-    @Override
-    protected void onPause() {
-        mapView.onPause();
-        super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        mapView.onDestroy();
-        super.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
+        mMap.getUiSettings().setScrollGesturesEnabled(true);
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
+        mMap.getUiSettings().setTiltGesturesEnabled(true);
+        mMap.getUiSettings().setRotateGesturesEnabled(true);
     }
 }
