@@ -42,7 +42,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="120dp"
                 android:layout_marginTop="10dp"
                 android:contentDescription="@string/logo"
                 android:src="@drawable/garage" />
@@ -58,6 +58,45 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardusuarios"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="23dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="23dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="@color/secondary"
+                        app:cardCornerRadius="30dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="12dp"
+                            tools:ignore="UseCompoundDrawables">
+
+                            <ImageView
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:contentDescription="@string/icono_de_usuarios"
+                                android:src="@drawable/usuarioic" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="26dp"
+                                android:fontFamily="@font/chonky"
+                                android:gravity="center_vertical"
+                                android:text="@string/ver_usuarios"
+                                android:textColor="@color/white"
+                                android:textSize="25sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/cardclientes"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
@@ -66,7 +105,7 @@
                         android:layout_marginEnd="23dp"
                         android:clickable="true"
                         android:focusable="true"
-                        app:cardBackgroundColor="@color/colorTwo"
+                        app:cardBackgroundColor="@color/primary_dark"
                         app:cardCornerRadius="30dp">
 
                         <LinearLayout
@@ -105,7 +144,7 @@
                         android:layout_marginEnd="23dp"
                         android:clickable="true"
                         android:focusable="true"
-                        app:cardBackgroundColor="@color/primary_dark"
+                        app:cardBackgroundColor="@color/colorTwo"
                         app:cardCornerRadius="30dp">
 
                         <LinearLayout
@@ -136,7 +175,46 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cardservicios"
+                        android:id="@+id/cardmecanicos"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="23dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="23dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="@color/primary_color"
+                        app:cardCornerRadius="30dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="12dp"
+                            tools:ignore="UseCompoundDrawables">
+
+                            <ImageView
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:contentDescription="@string/icono_de_vehiculo"
+                                android:src="@drawable/icmecanico" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="26dp"
+                                android:fontFamily="@font/chonky"
+                                android:gravity="center_vertical"
+                                android:text="@string/ver_mecanicos"
+                                android:textColor="@color/white"
+                                android:textSize="25sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/carddiagnosticos"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_marginStart="23dp"
@@ -145,6 +223,45 @@
                         android:clickable="true"
                         android:focusable="true"
                         app:cardBackgroundColor="@color/secondary"
+                        app:cardCornerRadius="30dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="12dp"
+                            tools:ignore="UseCompoundDrawables">
+
+                            <ImageView
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:contentDescription="@string/icono_de_vehiculo"
+                                android:src="@drawable/icdiagnostico" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="26dp"
+                                android:fontFamily="@font/chonky"
+                                android:gravity="center_vertical"
+                                android:text="@string/ver_diagnosticos"
+                                android:textColor="@color/white"
+                                android:textSize="25sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardservicios"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="23dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="23dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="@color/primary_dark"
                         app:cardCornerRadius="30dp">
 
                         <LinearLayout
@@ -220,9 +337,10 @@
                         android:layout_marginStart="23dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="23dp"
+                        android:layout_marginBottom="20dp"
                         android:clickable="true"
                         android:focusable="true"
-                        app:cardBackgroundColor="@color/primary_dark"
+                        app:cardBackgroundColor="@color/primary_color"
                         app:cardCornerRadius="30dp">
 
                         <LinearLayout
@@ -246,46 +364,6 @@
                                 android:fontFamily="@font/chonky"
                                 android:gravity="center_vertical"
                                 android:text="@string/ver_sensor"
-                                android:textColor="@color/white"
-                                android:textSize="25sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/cardusuarios"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginStart="23dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="23dp"
-                        android:layout_marginBottom="20dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        app:cardBackgroundColor="@color/secondary"
-                        app:cardCornerRadius="30dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:padding="12dp"
-                            tools:ignore="UseCompoundDrawables">
-
-                            <ImageView
-                                android:layout_width="80dp"
-                                android:layout_height="match_parent"
-                                android:contentDescription="@string/icono_de_usuarios"
-                                android:src="@drawable/usuarioic" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginStart="26dp"
-                                android:fontFamily="@font/chonky"
-                                android:gravity="center_vertical"
-                                android:text="@string/ver_usuarios"
                                 android:textColor="@color/white"
                                 android:textSize="25sp"
                                 android:textStyle="bold" />

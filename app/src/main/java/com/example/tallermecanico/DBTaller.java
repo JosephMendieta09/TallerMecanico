@@ -50,11 +50,25 @@ public class DBTaller extends SQLiteOpenHelper {
                 "kilometraje INTEGER, " +
                 "FOREIGN KEY(id_cliente) REFERENCES cliente(id))");
 
-        db.execSQL("CREATE TABLE especialidad(" +
+        db.execSQL("CREATE TABLE mecanico(" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "nombre TEXT, " +
-                "descripcion TEXT)");
+                "carnet INTEGER UNIQUE, " +
+                "correo TEXT, " +
+                "telefono TEXT, " +
+                "estado TEXT)");
 
+        db.execSQL("CREATE TABLE diagnostico(" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "problema TEXT, " +
+                "id_vehiculo INTEGER, " +
+                "id_mecanico INTEGER, " +
+                "fecha DATE DEFAULT (DATE('now')), " +
+                "resultado TEXT, " +
+                "observacion TEXT, " +
+                "estado TEXT, " +
+                "FOREIGN KEY(id_vehiculo) REFERENCES vehiculo(id), " +
+                "FOREIGN KEY(id_mecanico) REFERENCES mecanico(id))");
     }
 
     @Override
@@ -62,7 +76,8 @@ public class DBTaller extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS usuario");
         db.execSQL("DROP TABLE IF EXISTS cliente");
         db.execSQL("DROP TABLE IF EXISTS vehiculo");
-        db.execSQL("DROP TABLE IF EXISTS especialidad");
+        db.execSQL("DROP TABLE IF EXISTS mecanico");
+        db.execSQL("DROP TABLE IF EXISTS diagnostico");
         onCreate(db);
     }
 
@@ -286,5 +301,245 @@ public class DBTaller extends SQLiteOpenHelper {
                 new String[]{String.valueOf(vehiculo.getIdvehiculo())});
         db.close();
         return filas > 0;
+    }
+
+    // MÉTODOS MECÁNICO
+    public boolean insertarMecanico(Mecanico mecanico){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put("nombre", mecanico.getNombre());
+        valores.put("carnet", mecanico.getCarnet());
+        valores.put("correo", mecanico.getCorreo());
+        valores.put("telefono", mecanico.getTelefono());
+        valores.put("estado", "Disponible"); // Estado por defecto
+        long resultado = db.insert("mecanico", null, valores);
+        db.close();
+        return resultado != -1;
+    }
+
+    public ArrayList<Mecanico> obtenerMecanicos() {
+        ArrayList<Mecanico> lista = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM mecanico", null);
+        if (cursor.moveToFirst()) {
+            do {
+                Mecanico mecanico = new Mecanico(
+                        cursor.getInt(0),      // id
+                        cursor.getString(1),   // nombre
+                        cursor.getInt(2),      // carnet
+                        cursor.getString(3),   // correo
+                        cursor.getString(4),   // telefono
+                        cursor.getString(5)    // estado
+                );
+                lista.add(mecanico);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return lista;
+    }
+
+    public boolean eliminarMecanico(int carnet) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int filas = db.delete("mecanico", "carnet=?", new String[]{String.valueOf(carnet)});
+        db.close();
+        return filas > 0;
+    }
+
+    public boolean actualizarMecanico(Mecanico mecanico) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put("nombre", mecanico.getNombre());
+        valores.put("correo", mecanico.getCorreo());
+        valores.put("telefono", mecanico.getTelefono());
+        // No actualizamos el estado aquí, se maneja desde diagnóstico
+
+        int filas = db.update("mecanico", valores, "id=?",
+                new String[]{String.valueOf(mecanico.getIdMecanico())});
+        db.close();
+        return filas > 0;
+    }
+
+    public ArrayList<String> obtenerNombresMecanicosDisponibles() {
+        ArrayList<String> nombres = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT nombre FROM mecanico WHERE estado='Disponible'", null);
+        if (cursor.moveToFirst()) {
+            do {
+                nombres.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return nombres;
+    }
+
+    public int obtenerIdMecanicoPorNombre(String nombreMecanico) {
+        int id = -1;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id FROM mecanico WHERE nombre=?", new String[]{nombreMecanico});
+        if (cursor.moveToFirst()) {
+            id = cursor.getInt(0);
+        }
+        cursor.close();
+        db.close();
+        return id;
+    }
+
+    public boolean actualizarEstadoMecanico(int idMecanico, String nuevoEstado) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put("estado", nuevoEstado);
+        int filas = db.update("mecanico", valores, "id=?",
+                new String[]{String.valueOf(idMecanico)});
+        db.close();
+        return filas > 0;
+    }
+
+    public String obtenerNombreMecanicoPorId(int idMecanico) {
+        String nombre = "Desconocido";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT nombre FROM mecanico WHERE id=?",
+                new String[]{String.valueOf(idMecanico)});
+        if (cursor.moveToFirst()) {
+            nombre = cursor.getString(0);
+        }
+        cursor.close();
+        db.close();
+        return nombre;
+    }
+
+    // MÉTODOS DIAGNÓSTICO
+    public boolean insertarDiagnostico(Diagnostico diagnostico){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put("problema", diagnostico.getProblema());
+        valores.put("id_vehiculo", diagnostico.getIdVehiculo());
+
+        // Verificar si hay mecánicos disponibles
+        ArrayList<String> mecanicosDisponibles = obtenerNombresMecanicosDisponibles();
+
+        if (mecanicosDisponibles.size() > 0 && diagnostico.getIdMecanico() != -1) {
+            valores.put("id_mecanico", diagnostico.getIdMecanico());
+            valores.put("estado", "Asignado");
+            // Cambiar estado del mecánico a Ocupado
+            actualizarEstadoMecanico(diagnostico.getIdMecanico(), "Ocupado");
+        } else {
+            valores.putNull("id_mecanico");
+            valores.put("estado", "Pendiente");
+        }
+
+        valores.putNull("resultado");
+        valores.putNull("observacion");
+
+        long resultado = db.insert("diagnostico", null, valores);
+        db.close();
+        return resultado != -1;
+    }
+
+    public ArrayList<Diagnostico> obtenerDiagnosticos() {
+        ArrayList<Diagnostico> lista = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM diagnostico", null);
+        if (cursor.moveToFirst()) {
+            do {
+                Diagnostico diagnostico = new Diagnostico(
+                        cursor.getInt(0),      // id
+                        cursor.getString(1),   // problema
+                        cursor.getInt(2),      // id_vehiculo
+                        cursor.getInt(3),      // id_mecanico
+                        cursor.getString(4),   // fecha
+                        cursor.getString(5),   // resultado
+                        cursor.getString(6),   // observacion
+                        cursor.getString(7)    // estado
+                );
+                lista.add(diagnostico);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return lista;
+    }
+
+    public boolean eliminarDiagnostico(int idDiagnostico) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Obtener id del mecánico antes de eliminar para liberar su estado
+        Cursor cursor = db.rawQuery("SELECT id_mecanico, estado FROM diagnostico WHERE id=?",
+                new String[]{String.valueOf(idDiagnostico)});
+        if (cursor.moveToFirst()) {
+            int idMecanico = cursor.getInt(0);
+            String estado = cursor.getString(1);
+            // Si el diagnóstico no está finalizado y tiene mecánico, liberarlo
+            if (!estado.equals("Finalizado") && idMecanico != 0) {
+                actualizarEstadoMecanico(idMecanico, "Disponible");
+            }
+        }
+        cursor.close();
+
+        int filas = db.delete("diagnostico", "id=?", new String[]{String.valueOf(idDiagnostico)});
+        db.close();
+        return filas > 0;
+    }
+
+    public boolean actualizarDiagnostico(Diagnostico diagnostico) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues valores = new ContentValues();
+        valores.put("resultado", diagnostico.getResultado());
+        valores.put("observacion", diagnostico.getObservacion());
+        valores.put("estado", "Finalizado");
+
+        // Liberar al mecánico
+        if (diagnostico.getIdMecanico() != 0) {
+            actualizarEstadoMecanico(diagnostico.getIdMecanico(), "Disponible");
+        }
+
+        int filas = db.update("diagnostico", valores, "id=?",
+                new String[]{String.valueOf(diagnostico.getIdDiagnostico())});
+        db.close();
+        return filas > 0;
+    }
+
+    public ArrayList<String> obtenerPlacasVehiculosConCliente() {
+        ArrayList<String> placasConCliente = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT v.placa, c.nombre FROM vehiculo v " +
+                        "INNER JOIN cliente c ON v.id_cliente = c.id", null);
+        if (cursor.moveToFirst()) {
+            do {
+                String placa = cursor.getString(0);
+                String nombreCliente = cursor.getString(1);
+                placasConCliente.add(placa + " - " + nombreCliente);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return placasConCliente;
+    }
+
+    public int obtenerIdVehiculoPorPlaca(String placa) {
+        int id = -1;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id FROM vehiculo WHERE placa=?", new String[]{placa});
+        if (cursor.moveToFirst()) {
+            id = cursor.getInt(0);
+        }
+        cursor.close();
+        db.close();
+        return id;
+    }
+
+    public String obtenerPlacaVehiculoPorId(int idVehiculo) {
+        String placa = "";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT placa FROM vehiculo WHERE id=?",
+                new String[]{String.valueOf(idVehiculo)});
+        if (cursor.moveToFirst()) {
+            placa = cursor.getString(0);
+        }
+        cursor.close();
+        db.close();
+        return placa;
     }
 }

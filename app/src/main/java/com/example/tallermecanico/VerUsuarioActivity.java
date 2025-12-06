@@ -69,11 +69,19 @@ public class VerUsuarioActivity extends AppCompatActivity {
                 if (id == R.id.nav_inicio) {
                     Intent intent = new Intent(VerUsuarioActivity.this, HomeActivity.class);
                     startActivity(intent);
+                } else if (id == R.id.nav_usuarios) {
+                    Toast.makeText(VerUsuarioActivity.this, "Ver Usuarios", Toast.LENGTH_SHORT).show();
                 } else if (id == R.id.nav_clientes) {
                     Intent intent = new Intent(VerUsuarioActivity.this, ClientesActivity.class);
                     startActivity(intent);
                 } else if (id == R.id.nav_vehiculos) {
                     Intent intent = new Intent(VerUsuarioActivity.this, VehiculosActivity.class);
+                    startActivity(intent);
+                } else if (id == R.id.nav_mecanicos) {
+                    Intent intent = new Intent(VerUsuarioActivity.this, MecanicosActivity.class);
+                    startActivity(intent);
+                } else if (id == R.id.nav_diagnosticos) {
+                    Intent intent = new Intent(VerUsuarioActivity.this, DiagnosticosActivity.class);
                     startActivity(intent);
                 } else if (id == R.id.nav_servicios) {
                     Intent intent = new Intent(VerUsuarioActivity.this, ServiciosActivity.class);
@@ -84,8 +92,6 @@ public class VerUsuarioActivity extends AppCompatActivity {
                 } else if (id == R.id.nav_sensores) {
                     Intent intent = new Intent(VerUsuarioActivity.this, SensoresActivity.class);
                     startActivity(intent);
-                } else if (id == R.id.nav_usuarios) {
-                    Toast.makeText(VerUsuarioActivity.this, "Ver Usuarios", Toast.LENGTH_SHORT).show();
                 } else if (id == R.id.nav_cerrar_sesion) {
                     mostrarCerrarSesion();
                     return true;

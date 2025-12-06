@@ -66,6 +66,12 @@ public class HomeActivity extends AppCompatActivity{
                 } else if (id == R.id.nav_vehiculos) {
                     Intent intent = new Intent(HomeActivity.this, VehiculosActivity.class);
                     startActivity(intent);
+                } else if (id == R.id.nav_mecanicos) {
+                    Intent intent = new Intent(HomeActivity.this, MecanicosActivity.class);
+                    startActivity(intent);
+                } else if (id == R.id.nav_diagnosticos) {
+                    Intent intent = new Intent(HomeActivity.this, DiagnosticosActivity.class);
+                    startActivity(intent);
                 } else if (id == R.id.nav_servicios) {
                     Intent intent = new Intent(HomeActivity.this, ServiciosActivity.class);
                     startActivity(intent);

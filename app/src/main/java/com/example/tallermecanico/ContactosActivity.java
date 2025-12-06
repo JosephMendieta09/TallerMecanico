@@ -81,6 +81,12 @@ public class ContactosActivity extends AppCompatActivity implements OnMapReadyCa
                 } else if (id == R.id.nav_vehiculos) {
                     Intent intent = new Intent(ContactosActivity.this, VehiculosActivity.class);
                     startActivity(intent);
+                } else if (id == R.id.nav_mecanicos) {
+                    Intent intent = new Intent(ContactosActivity.this, MecanicosActivity.class);
+                    startActivity(intent);
+                } else if (id == R.id.nav_diagnosticos) {
+                    Intent intent = new Intent(ContactosActivity.this, DiagnosticosActivity.class);
+                    startActivity(intent);
                 } else if (id == R.id.nav_servicios) {
                     Intent intent = new Intent(ContactosActivity.this, ServiciosActivity.class);
                     startActivity(intent);

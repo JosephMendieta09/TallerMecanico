@@ -10,6 +10,10 @@
     </item>
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_usuarios"
+            android:icon="@drawable/usuario"
+            android:title="@string/usuarios" />
+        <item
             android:id="@+id/nav_clientes"
             android:icon="@drawable/people"
             android:title="@string/clientes" />
@@ -17,6 +21,14 @@
             android:id="@+id/nav_vehiculos"
             android:icon="@drawable/car"
             android:title="@string/veh_culos" />
+        <item
+            android:id="@+id/nav_mecanicos"
+            android:icon="@drawable/engineering"
+            android:title="@string/mecanicos" />
+        <item
+            android:id="@+id/nav_diagnosticos"
+            android:icon="@drawable/feed"
+            android:title="@string/diagnostico" />
         <item
             android:id="@+id/nav_servicios"
             android:icon="@drawable/service"
@@ -29,10 +41,6 @@
             android:id="@+id/nav_sensores"
             android:icon="@drawable/game"
             android:title="@string/sensores" />
-        <item
-            android:id="@+id/nav_usuarios"
-            android:icon="@drawable/usuario"
-            android:title="@string/usuarios" />
     </group>
     <item android:title="@string/sesi_n">
         <menu>

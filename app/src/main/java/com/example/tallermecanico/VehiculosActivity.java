@@ -72,11 +72,20 @@ public class VehiculosActivity extends AppCompatActivity {
                 if (id == R.id.nav_inicio) {
                     Intent intent = new Intent(VehiculosActivity.this, HomeActivity.class);
                     startActivity(intent);
+                } else if (id == R.id.nav_usuarios) {
+                    Intent intent = new Intent(VehiculosActivity.this, VerUsuarioActivity.class);
+                    startActivity(intent);
                 } else if (id == R.id.nav_clientes) {
                     Intent intent = new Intent(VehiculosActivity.this, ClientesActivity.class);
                     startActivity(intent);
                 } else if (id == R.id.nav_vehiculos) {
                     Toast.makeText(VehiculosActivity.this, "Gestión de Vehiculos", Toast.LENGTH_SHORT).show();
+                } else if (id == R.id.nav_mecanicos) {
+                    Intent intent = new Intent(VehiculosActivity.this, MecanicosActivity.class);
+                    startActivity(intent);
+                } else if (id == R.id.nav_diagnosticos) {
+                    Intent intent = new Intent(VehiculosActivity.this, DiagnosticosActivity.class);
+                    startActivity(intent);
                 } else if (id == R.id.nav_servicios) {
                     Intent intent = new Intent(VehiculosActivity.this, ServiciosActivity.class);
                     startActivity(intent);
@@ -85,9 +94,6 @@ public class VehiculosActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else if (id == R.id.nav_sensores) {
                     Intent intent = new Intent(VehiculosActivity.this, SensoresActivity.class);
-                    startActivity(intent);
-                } else if (id == R.id.nav_usuarios) {
-                    Intent intent = new Intent(VehiculosActivity.this, VerUsuarioActivity.class);
                     startActivity(intent);
                 } else if (id == R.id.nav_cerrar_sesion) {
                     mostrarCerrarSesion();

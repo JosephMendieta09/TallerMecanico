@@ -72,6 +72,12 @@ public class ClientesActivity extends AppCompatActivity {
                 } else if (id == R.id.nav_vehiculos) {
                     Intent intent = new Intent(ClientesActivity.this, VehiculosActivity.class);
                     startActivity(intent);
+                } else if (id == R.id.nav_mecanicos) {
+                    Intent intent = new Intent(ClientesActivity.this, MecanicosActivity.class);
+                    startActivity(intent);
+                } else if (id == R.id.nav_diagnosticos) {
+                    Intent intent = new Intent(ClientesActivity.this, DiagnosticosActivity.class);
+                    startActivity(intent);
                 } else if (id == R.id.nav_servicios) {
                     Intent intent = new Intent(ClientesActivity.this, ServiciosActivity.class);
                     startActivity(intent);

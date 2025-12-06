@@ -84,6 +84,12 @@ public class ServiciosActivity extends AppCompatActivity implements ServicioAdap
                 } else if (id == R.id.nav_vehiculos) {
                     Intent intent = new Intent(ServiciosActivity.this, VehiculosActivity.class);
                     startActivity(intent);
+                } else if (id == R.id.nav_mecanicos) {
+                    Intent intent = new Intent(ServiciosActivity.this, MecanicosActivity.class);
+                    startActivity(intent);
+                } else if (id == R.id.nav_diagnosticos) {
+                    Intent intent = new Intent(ServiciosActivity.this, DiagnosticosActivity.class);
+                    startActivity(intent);
                 } else if (id == R.id.nav_servicios) {
                     Toast.makeText(ServiciosActivity.this, "Gestión de Servicios", Toast.LENGTH_SHORT).show();
                 } else if (id == R.id.nav_contactos) {
