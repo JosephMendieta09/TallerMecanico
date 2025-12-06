@@ -75,14 +75,18 @@ public class DiagnosticoAdapter extends RecyclerView.Adapter<DiagnosticoAdapter.
                          final OnDiagnosticoDeleteListener listener,
                          final OnDiagnosticoEditListener editListener) {
             tvId.setText("ID: " + diagnostico.getIdDiagnostico());
-            tvProblema.setText("Problema: " + diagnostico.getProblema());
-            tvVehiculo.setText("Vehículo: " + diagnostico.getPlacaVehiculo() +
-                    " - " + diagnostico.getNombreCliente());
+            tvProblema.setText("Problema: " + (diagnostico.getProblema() != null ? diagnostico.getProblema() : ""));
+
+            String placaVehiculo = diagnostico.getPlacaVehiculo() != null ? diagnostico.getPlacaVehiculo() : "N/A";
+            String nombreCliente = diagnostico.getNombreCliente() != null ? diagnostico.getNombreCliente() : "N/A";
+            tvVehiculo.setText("Vehículo: " + placaVehiculo + " - " + nombreCliente);
 
             String mecanico = diagnostico.getNombreMecanico() != null ?
                     diagnostico.getNombreMecanico() : "Sin asignar";
             tvMecanico.setText("Mecánico: " + mecanico);
-            tvFecha.setText("Fecha: " + diagnostico.getFecha());
+
+            String fecha = diagnostico.getFecha() != null ? diagnostico.getFecha() : "N/A";
+            tvFecha.setText("Fecha: " + fecha);
 
             String resultado = diagnostico.getResultado() != null ?
                     diagnostico.getResultado() : "Pendiente";
@@ -91,10 +95,12 @@ public class DiagnosticoAdapter extends RecyclerView.Adapter<DiagnosticoAdapter.
             String observacion = diagnostico.getObservacion() != null ?
                     diagnostico.getObservacion() : "Sin observaciones";
             tvObservacion.setText("Observación: " + observacion);
-            tvEstado.setText("Estado: " + diagnostico.getEstado());
+
+            String estado = diagnostico.getEstado() != null ? diagnostico.getEstado() : "Pendiente";
+            tvEstado.setText("Estado: " + estado);
 
             // Solo permitir editar si no está finalizado
-            if (diagnostico.getEstado().equals("Finalizado")) {
+            if ("Finalizado".equals(diagnostico.getEstado())) {
                 btnModificar.setEnabled(false);
                 btnModificar.setAlpha(0.5f);
             } else {

@@ -411,19 +411,19 @@ public class DBTaller extends SQLiteOpenHelper {
 
     // MÉTODOS DIAGNÓSTICO
     public boolean insertarDiagnostico(Diagnostico diagnostico){
+        // Primero verificar si hay mecánicos disponibles ANTES de abrir la DB
+        ArrayList<String> mecanicosDisponibles = obtenerNombresMecanicosDisponibles();
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues valores = new ContentValues();
         valores.put("problema", diagnostico.getProblema());
         valores.put("id_vehiculo", diagnostico.getIdVehiculo());
 
-        // Verificar si hay mecánicos disponibles
-        ArrayList<String> mecanicosDisponibles = obtenerNombresMecanicosDisponibles();
-
+        int idMecanicoAsignado = -1;
         if (mecanicosDisponibles.size() > 0 && diagnostico.getIdMecanico() != -1) {
             valores.put("id_mecanico", diagnostico.getIdMecanico());
             valores.put("estado", "Asignado");
-            // Cambiar estado del mecánico a Ocupado
-            actualizarEstadoMecanico(diagnostico.getIdMecanico(), "Ocupado");
+            idMecanicoAsignado = diagnostico.getIdMecanico();
         } else {
             valores.putNull("id_mecanico");
             valores.put("estado", "Pendiente");
@@ -434,6 +434,12 @@ public class DBTaller extends SQLiteOpenHelper {
 
         long resultado = db.insert("diagnostico", null, valores);
         db.close();
+
+        // Cambiar estado del mecánico DESPUÉS de cerrar la DB del insert
+        if (resultado != -1 && idMecanicoAsignado != -1) {
+            actualizarEstadoMecanico(idMecanicoAsignado, "Ocupado");
+        }
+
         return resultado != -1;
     }
 
@@ -443,11 +449,17 @@ public class DBTaller extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM diagnostico", null);
         if (cursor.moveToFirst()) {
             do {
+                // Manejar id_mecanico que puede ser NULL
+                int idMecanico = 0;
+                if (!cursor.isNull(3)) {
+                    idMecanico = cursor.getInt(3);
+                }
+
                 Diagnostico diagnostico = new Diagnostico(
                         cursor.getInt(0),      // id
                         cursor.getString(1),   // problema
                         cursor.getInt(2),      // id_vehiculo
-                        cursor.getInt(3),      // id_mecanico
+                        idMecanico,            // id_mecanico (puede ser 0 si es NULL)
                         cursor.getString(4),   // fecha
                         cursor.getString(5),   // resultado
                         cursor.getString(6),   // observacion
@@ -468,11 +480,14 @@ public class DBTaller extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT id_mecanico, estado FROM diagnostico WHERE id=?",
                 new String[]{String.valueOf(idDiagnostico)});
         if (cursor.moveToFirst()) {
-            int idMecanico = cursor.getInt(0);
-            String estado = cursor.getString(1);
-            // Si el diagnóstico no está finalizado y tiene mecánico, liberarlo
-            if (!estado.equals("Finalizado") && idMecanico != 0) {
-                actualizarEstadoMecanico(idMecanico, "Disponible");
+            // Verificar si id_mecanico no es NULL
+            if (!cursor.isNull(0)) {
+                int idMecanico = cursor.getInt(0);
+                String estado = cursor.getString(1);
+                // Si el diagnóstico no está finalizado y tiene mecánico, liberarlo
+                if (!estado.equals("Finalizado") && idMecanico != 0) {
+                    actualizarEstadoMecanico(idMecanico, "Disponible");
+                }
             }
         }
         cursor.close();
@@ -541,5 +556,18 @@ public class DBTaller extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return placa;
+    }
+
+    public int obtenerIdClientePorIdVehiculo(int idVehiculo) {
+        int idCliente = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT id_cliente FROM vehiculo WHERE id=?",
+                new String[]{String.valueOf(idVehiculo)});
+        if (cursor.moveToFirst()) {
+            idCliente = cursor.getInt(0);
+        }
+        cursor.close();
+        db.close();
+        return idCliente;
     }
 }

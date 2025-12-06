@@ -156,23 +156,23 @@ public class DiagnosticosActivity extends AppCompatActivity {
 
         // Cargar información adicional para cada diagnóstico
         for (Diagnostico diagnostico : diagnosticosDB) {
-            String placa = dbTaller.obtenerPlacaVehiculoPorId(diagnostico.getIdVehiculo());
-            diagnostico.setPlacaVehiculo(placa);
+            try {
+                String placa = dbTaller.obtenerPlacaVehiculoPorId(diagnostico.getIdVehiculo());
+                diagnostico.setPlacaVehiculo(placa);
 
-            int idCliente = 0;
-            // Obtener id del cliente del vehículo
-            for (Vehiculo v : dbTaller.obtenerVehiculos()) {
-                if (v.getIdvehiculo() == diagnostico.getIdVehiculo()) {
-                    idCliente = v.getIdcliente();
-                    break;
+                // Obtener id del cliente del vehículo de forma más eficiente
+                int idCliente = dbTaller.obtenerIdClientePorIdVehiculo(diagnostico.getIdVehiculo());
+                String nombreCliente = dbTaller.obtenerNombreClientePorId(idCliente);
+                diagnostico.setNombreCliente(nombreCliente);
+
+                if (diagnostico.getIdMecanico() != 0) {
+                    String nombreMecanico = dbTaller.obtenerNombreMecanicoPorId(diagnostico.getIdMecanico());
+                    diagnostico.setNombreMecanico(nombreMecanico);
+                } else {
+                    diagnostico.setNombreMecanico("Sin asignar");
                 }
-            }
-            String nombreCliente = dbTaller.obtenerNombreClientePorId(idCliente);
-            diagnostico.setNombreCliente(nombreCliente);
-
-            if (diagnostico.getIdMecanico() != 0) {
-                String nombreMecanico = dbTaller.obtenerNombreMecanicoPorId(diagnostico.getIdMecanico());
-                diagnostico.setNombreMecanico(nombreMecanico);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
